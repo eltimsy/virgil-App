@@ -70,7 +70,7 @@
 
    async onLogAttempt() {
      let TOKEN = await AsyncStorage.getItem(STORAGE_KEY);
-     let socket = io.connect('http://localhost:8080');
+     let socket = io.connect('wss://virgil-is-the-restaurant-guide.herokuapp.com/');
      socket.on('connect', () => {
        socket
         .emit('authenticate', {id_token: TOKEN})
@@ -89,7 +89,7 @@
      let value = this.refs.form.getValue();
      Alert.alert(value.first_name)
      if (value) {
-       fetch('http://localhost:8080/users', {
+       fetch('https://virgil-is-the-restaurant-guide.herokuapp.com/users', {
          method: 'POST',
          headers: {
            'Accept': 'application/json',
@@ -113,7 +113,7 @@
    userLogin() {
      let value = this.refs.form.getValue();
      if (value) {
-       fetch('http://localhost:8080/sessions/create', {
+       fetch('https://virgil-is-the-restaurant-guide.herokuapp.com/sessions/create', {
          method: 'POST',
          headers: {
            'Accept': 'application/json',
