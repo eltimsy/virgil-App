@@ -7,6 +7,8 @@
  import { Alert, AppRegistry, ScrollView, AsyncStorage, Text, TextInput, Image, View, StyleSheet, Navigator, TouchableHighlight } from 'react-native';
  import t from 'tcomb-form-native';
  import MyScene from './pages/MyScene';
+ import MyContacts from './pages/MyContacts'
+ const Contacts = require('react-native-contacts')
 
  const STORAGE_KEY = 'id_token';
  const Form = t.form.Form;
@@ -19,6 +21,15 @@
  });
 
  let options = {};
+ let contactlist;
+
+ Contacts.getAll((err, contacts) => {
+   if(err && err.type === 'permissionDenied'){
+     // x.x
+   } else {
+     contactlist = contacts
+   }
+ })
 
  class Pictures extends Component {
    render() {
@@ -154,6 +165,7 @@
               <Text style={styles.buttonText}>Filler Text</Text>
             </TouchableHighlight>
           </View>
+          <MyContacts contactList = {contactlist}/>
         </View>
       </ScrollView>
     );
