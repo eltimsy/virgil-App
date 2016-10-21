@@ -4,7 +4,7 @@
  * @flow
  */
  import React, { Component } from 'react';
- import { Alert, AppRegistry, AsyncStorage, Text, TextInput, Image, View, StyleSheet, Navigator, TouchableHighlight } from 'react-native';
+ import { Alert, AppRegistry, ScrollView, AsyncStorage, Text, TextInput, Image, View, StyleSheet, Navigator, TouchableHighlight } from 'react-native';
  import t from 'tcomb-form-native';
  import MyScene from './pages/MyScene';
 
@@ -27,12 +27,25 @@
      );
    }
  }
+ //
+ // class JWTStore extends Component {
+ //   constructor(props) {
+ //     super(props)
+ //   }
+ //
+ //
+ //
+ // }
 
- class JWTStore extends Component {
+ class VirgilApp extends Component {
    constructor(props) {
-     super(props)
+     super(props);
+     this.state = {
+       blue: 'blue',
+       text: ''
+     };
+     this.userSignup = this.userSignup.bind(this);
    }
-
    async onValueChange(item, value) {
      try {
        await AsyncStorage.setItem(item, value);
@@ -58,7 +71,9 @@
    }
 
    userSignup() {
+     console.log("I'm here!")
      let value = this.refs.form.getValue();
+     Alert.alert(value.first_name)
      if (value) {
        fetch('http://localhost:8080/users', {
          method: 'POST',
@@ -112,49 +127,40 @@
      }
    }
 
- }
-
- class VirgilApp extends Component {
-   constructor(props) {
-     super(props);
-     this.state = {
-       blue: 'blue',
-       text: ''
-     };
-   }
-
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.row}>
-          <Text style={styles.title}>Signup/Login</Text>
+      <ScrollView>
+        <View  style={styles.container}>
+          <View style={styles.row}>
+            <Text style={styles.title}>Signup/Login</Text>
+          </View>
+          <View style={styles.row}>
+            <Form
+              ref="form"
+              type={User}
+              options={options}
+            />
+          </View>
+          <View style={styles.row}>
+            <TouchableHighlight style={styles.button} onPress={this.userSignup} underlayColor='#99d9f4'>
+              <Text style={styles.buttonText}>Signup</Text>
+            </TouchableHighlight>
+            <TouchableHighlight style={styles.button} onPress={this.userLogin} underlayColor='#99d9f4'>
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableHighlight>
+          </View>
+          <View style={styles.row}>
+            <TouchableHighlight onPress={this._getProtectedQuote} style={styles.button}>
+              <Text style={styles.buttonText}>Filler Text</Text>
+            </TouchableHighlight>
+          </View>
         </View>
-        <View style={styles.row}>
-          <Form
-            ref="form"
-            type={User}
-            options={options}
-          />
-        </View>
-        <View style={styles.row}>
-          <TouchableHighlight style={styles.button} onPress={this.userSignup} underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Signup</Text>
-          </TouchableHighlight>
-          <TouchableHighlight style={styles.button} onPress={this.userLogin} underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableHighlight>
-        </View>
-        <View style={styles.row}>
-          <TouchableHighlight onPress={this._getProtectedQuote} style={styles.button}>
-            <Text style={styles.buttonText}>Filler Text</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
+      </ScrollView>
     );
   }
 }
 
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     marginTop: 50,

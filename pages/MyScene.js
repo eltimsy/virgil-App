@@ -7,7 +7,6 @@ Contacts.getAll((err, contacts) => {
   if(err && err.type === 'permissionDenied'){
     // x.x
   } else {
-    console.log(contacts)
     contactlist = contacts
   }
 })
