@@ -4,7 +4,7 @@
  * @flow
  */
  import React, { Component } from 'react';
- import { Alert, AppRegistry, AsyncStorage, Text, TextInput, Image, View, StyleSheet, Navigator } from 'react-native';
+ import { Alert, AppRegistry, AsyncStorage, Text, TextInput, Image, View, StyleSheet, Navigator, TouchableHighlight } from 'react-native';
  import t from 'tcomb-form-native';
  import MyScene from './pages/MyScene';
 
@@ -152,6 +152,7 @@
       </View>
     );
   }
+}
 
   const styles = StyleSheet.create({
   container: {
@@ -163,12 +164,12 @@
   title: {
     fontSize: 30,
     alignSelf: 'center',
-    marginBottom: 30
+    marginBottom: 30,
   },
   buttonText: {
     fontSize: 18,
     color: 'white',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   button: {
     height: 36,
@@ -178,10 +179,8 @@
     borderRadius: 8,
     marginBottom: 10,
     alignSelf: 'stretch',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });
 
  AppRegistry.registerComponent('VirgilApp', () => VirgilApp);
-
-}
