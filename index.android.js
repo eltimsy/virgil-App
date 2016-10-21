@@ -46,7 +46,8 @@
        blue: 'blue',
        text: '',
        contactList: [],
-       grouplist: []
+       grouplist: [],
+       logStatus: false
      };
      this.userSignup = this.userSignup.bind(this);
      this.addContacts = this.addContacts.bind(this);
@@ -147,37 +148,57 @@
    }
 
   render() {
+    let loggedIn = this.state.logStatus ? routes[2] : routes[0];
+    const routes = [
+      {id: 'SplashPage', index: 0},
+      {id: 'Login', index: 1},
+      {id: 'Signup', index: 2},
+      {id: 'Chat', index: 3}
+    ];
     return (
-      <ScrollView>
-        <View  style={styles.container}>
-          <View style={styles.row}>
-            <Text style={styles.title}>Signup/Login</Text>
+      <Navigator
+        initialRoute={{id: 'SplashPage', name: 'Index'}}
+        renderScene={this.renderScene.bind(this)}
+        configureScene={(route) => {
+          if (route.sceneConfig) {
+            return route.sceneConfig;
+          }
+          return Navigator.sceneConfigs.FadeAndroid;
+        }} />
+    );
+        initialRouteStack={routes}
+        renderScene={(route, navigator) => }
+        <ScrollView>
+          <View  style={styles.container}>
+            <View style={styles.row}>
+              <Text style={styles.title}>Signup/Login</Text>
+            </View>
+            <View style={styles.row}>
+              <Form
+                ref="form"
+                type={User}
+                options={options}
+              />
+            </View>
+            <View style={styles.row}>
+              <TouchableHighlight style={styles.button} onPress={this.userSignup} underlayColor='#99d9f4'>
+                <Text style={styles.buttonText}>Signup</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.button} onPress={this.userLogin} underlayColor='#99d9f4'>
+                <Text style={styles.buttonText}>Login</Text>
+              </TouchableHighlight>
+            </View>
+            <View style={styles.row}>
+              <TouchableHighlight onPress={this._getProtectedQuote} style={styles.button}>
+                <Text style={styles.buttonText}>Filler Text</Text>
+              </TouchableHighlight>
+            </View>
+            <MyContacts
+            contactList = {this.state.contactList}
+            addContacts = {this.addContacts}/>
           </View>
-          <View style={styles.row}>
-            <Form
-              ref="form"
-              type={User}
-              options={options}
-            />
-          </View>
-          <View style={styles.row}>
-            <TouchableHighlight style={styles.button} onPress={this.userSignup} underlayColor='#99d9f4'>
-              <Text style={styles.buttonText}>Signup</Text>
-            </TouchableHighlight>
-            <TouchableHighlight style={styles.button} onPress={this.userLogin} underlayColor='#99d9f4'>
-              <Text style={styles.buttonText}>Login</Text>
-            </TouchableHighlight>
-          </View>
-          <View style={styles.row}>
-            <TouchableHighlight onPress={this._getProtectedQuote} style={styles.button}>
-              <Text style={styles.buttonText}>Filler Text</Text>
-            </TouchableHighlight>
-          </View>
-          <MyContacts
-          contactList = {this.state.contactList}
-          addContacts = {this.addContacts}/>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      />
     );
   }
 }
