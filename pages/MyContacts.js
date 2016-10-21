@@ -1,12 +1,14 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TouchableHighlight } from 'react-native';
+import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import MyContact from './MyContact';
+const uuid = require('react-native-uuid');
 
 
 export default class MyContacts extends Component {
   static propTypes = {
     contactList: PropTypes.array.isRequired,
     addContacts: PropTypes.func.isRequired,
+    grouplist: PropTypes.array.isRequired,
   }
 
   render() {
@@ -14,11 +16,18 @@ export default class MyContacts extends Component {
     return (
       <View style={{flex: 1}}>
 
+        <View style={styles.group}>
+          {this.props.grouplist.map(function(element) {
+            return (<Text key = {uuid.v4()}>
+              {element.name} {element.number}
+            </Text>)
+          })}
+        </View>
         <View style={{flex: 2, flexDirection: 'column'}}>
-          {this.props.contactList.map(function(contact, index) {
+          {this.props.contactList.map(function(contact) {
             return (<MyContact
               contact = {contact}
-              key = {index}
+              key = {uuid.v4()}
               addContacts = {addcontacts}
             />)
           })}
@@ -28,3 +37,11 @@ export default class MyContacts extends Component {
     )
   }
 }
+const styles = StyleSheet.create({
+  group: {
+    borderColor: 'black',
+    borderRadius: 5,
+    justifyContent: 'center',
+    backgroundColor: 'lightblue',
+  },
+});

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, TouchableHighlight, Alert, StyleSheet } from 'react-native';
 
-
 export default class MyContacts extends Component {
   static propTypes = {
     contact: PropTypes.object.isRequired,
@@ -14,9 +13,8 @@ export default class MyContacts extends Component {
     console.log(this.props.addContacts)
     console.log(this.props.contact.phoneNumbers)
     if(this.props.contact.phoneNumbers.length > 0) {
-      this.props.addContacts(this.props.contact.phoneNumbers[0].number)
+      this.props.addContacts(this.props.contact.phoneNumbers[0].number, this.props.contact.givenName)
     }
-    Alert.alert('hello');
   }
 
 

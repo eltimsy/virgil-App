@@ -142,10 +142,26 @@
        console.log(`AsyncStorage error: ${err}.`)
      }
    }
-   addContacts(phoneNum) {
-     this.state.grouplist.push(phoneNum)
-     this.setState(this.state)
-     console.log(this.state.grouplist)
+   addContacts(phoneNum, name) {
+     let list = this.state.grouplist;
+     let newcontact = true;
+     let duplicate = null;
+     list.forEach(function(element, index) {
+       if (element.number === phoneNum) {
+        newcontact = false
+        duplicate = index
+      }
+    })
+
+     if(newcontact === true) {
+       list.push({name: name, number: phoneNum})
+       this.setState(this.state);
+       Alert.alert('Added: ' + name);
+     } else if (newcontact === false) {
+       list = list.splice(duplicate, 1);
+       this.setState(this.state);
+       Alert.alert('Deleted: ' + name);
+     }
    }
 
   render() {
@@ -177,7 +193,9 @@
           </View>
           <MyContacts
           contactList = {this.state.contactList}
-          addContacts = {this.addContacts}/>
+          addContacts = {this.addContacts}
+          grouplist = {this.state.grouplist}
+          />
         </View>
       </ScrollView>
     );
