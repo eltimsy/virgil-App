@@ -1,24 +1,27 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, TouchableHighlight } from 'react-native';
+import MyContact from './MyContact';
 
 
-export default class MyScene extends Component {
+export default class MyContacts extends Component {
+  static propTypes = {
+    contactList: PropTypes.array.isRequired,
+    addContacts: PropTypes.func.isRequired,
+  }
 
   render() {
+    let addcontacts = this.props.addContacts
     return (
       <View style={{flex: 1}}>
 
         <View style={{flex: 2, flexDirection: 'column'}}>
-
-          <Text style={{
-           color: 'blue',
-           fontSize: 30,
-           backgroundColor: 'teal',
-           textAlign: 'center'}}>
-           {/* {contactlist[15].phoneNumbers[0].number} */}
-           {this.props.contactList[15].phoneNumbers[0].number}
-           hello
-          </Text>
+          {this.props.contactList.map(function(contact, index) {
+            return (<MyContact
+              contact = {contact}
+              key = {index}
+              addContacts = {addcontacts}
+            />)
+          })}
         </View>
 
       </View>

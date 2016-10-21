@@ -7,8 +7,8 @@
  import { Alert, AppRegistry, ScrollView, AsyncStorage, Text, TextInput, Image, View, StyleSheet, Navigator, TouchableHighlight } from 'react-native';
  import t from 'tcomb-form-native';
  import MyScene from './pages/MyScene';
- import MyContacts from './pages/MyContacts'
- const Contacts = require('react-native-contacts')
+ import MyContacts from './pages/MyContacts';
+ const Contacts = require('react-native-contacts');
 
  const STORAGE_KEY = 'id_token';
  const Form = t.form.Form;
@@ -21,15 +21,6 @@
  });
 
  let options = {};
- let contactlist;
-
- Contacts.getAll((err, contacts) => {
-   if(err && err.type === 'permissionDenied'){
-     // x.x
-   } else {
-     contactlist = contacts
-   }
- })
 
  class Pictures extends Component {
    render() {
@@ -53,9 +44,21 @@
      super(props);
      this.state = {
        blue: 'blue',
-       text: ''
+       text: '',
+       contactList: [],
+       grouplist: []
      };
      this.userSignup = this.userSignup.bind(this);
+     this.addContacts = this.addContacts.bind(this);
+   }
+   componentWillMount() {
+     Contacts.getAll((err, contacts) => {
+       if(err && err.type === 'permissionDenied'){
+         // x.x
+       } else {
+         this.setState({contactList: contacts})
+       }
+     })
    }
    async onValueChange(item, value) {
      try {
@@ -137,6 +140,11 @@
        console.log(`AsyncStorage error: ${err}.`)
      }
    }
+   addContacts(phoneNum) {
+     this.state.grouplist.push(phoneNum)
+     this.setState(this.state)
+     console.log(this.state.grouplist)
+   }
 
   render() {
     return (
@@ -165,7 +173,9 @@
               <Text style={styles.buttonText}>Filler Text</Text>
             </TouchableHighlight>
           </View>
-          <MyContacts contactList = {contactlist}/>
+          <MyContacts
+          contactList = {this.state.contactList}
+          addContacts = {this.addContacts}/>
         </View>
       </ScrollView>
     );
