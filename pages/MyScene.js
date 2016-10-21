@@ -40,7 +40,7 @@ export default class MyScene extends Component {
            fontSize: 30,
            backgroundColor: 'teal',
            textAlign: 'center'}}>
-           {contactlist[0].phoneNumbers[0].number}
+           {contactlist[15].phoneNumbers[0].number}
           </Text>
         </View>
 

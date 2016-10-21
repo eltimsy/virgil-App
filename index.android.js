@@ -6,6 +6,7 @@
  import React, { Component } from 'react';
  import { AppRegistry, Text, TextInput, Image, View, StyleSheet, Navigator} from 'react-native';
  import MyScene from './pages/MyScene';
+ import MyLogin from './pages/MyLogin';
 
  class Pictures extends Component {
    render() {
@@ -20,8 +21,19 @@
      super(props);
      this.state = {
        blue: 'blue',
-       text: ''
+       text: '',
+       email: '',
+       password: ''
      };
+   }
+   updateEmail = (text) => {
+    this.setState({email: text})
+   }
+   updatePassword = (text) => {
+      this.setState({password: text})
+   }
+   login = () => {
+      alert('email: ' + this.state.email + ' password: ' + this.state.password)
    }
 
    render() {
@@ -30,32 +42,40 @@
        uri: 'http://static1.1.sqspcdn.com/static/f/157301/9552810/1290590721240/1467551-9552809-thumbnail.jpg?token=1ca5iFS9emKfwTIwI5AI%2FoJRbl4%3D'
      };
      return (
-      <Navigator
-       initialRoute={{ title: 'My Initial Scene', index: 0 }}
-       renderScene={(route, navigator) =>
-       <MyScene
-         title={route.title}
+       <View>
+           <MyLogin
+              updateEmail = {this.updateEmail}
+              updatePassword = {this.updatePassword}
+              login = {this.login}
+           />
+      </View>
 
-         // Function to call when a new scene should be displayed
-         onForward={ () => {
-           const nextIndex = route.index + 1;
-           navigator.push({
-             title: 'Scene ' + nextIndex,
-             index: nextIndex,
-           });
-         }}
-
-         // Function to call to go back to the previous scene
-         onBack={() => {
-           if (route.index > 0) {
-             navigator.pop();
-           }
-          }}
-         />
-       }
-       configureScene={(route, routeStack) =>
-        Navigator.SceneConfigs.FadeAndroid}
-     />
+    //   <Navigator
+    //    initialRoute={{ title: 'My Initial Scene', index: 0 }}
+    //    renderScene={(route, navigator) =>
+    //    <MyScene
+    //      title={route.title}
+     //
+    //      // Function to call when a new scene should be displayed
+    //      onForward={ () => {
+    //        const nextIndex = route.index + 1;
+    //        navigator.push({
+    //          title: 'Scene ' + nextIndex,
+    //          index: nextIndex,
+    //        });
+    //      }}
+     //
+    //      // Function to call to go back to the previous scene
+    //      onBack={() => {
+    //        if (route.index > 0) {
+    //          navigator.pop();
+    //        }
+    //       }}
+    //      />
+    //    }
+    //    configureScene={(route, routeStack) =>
+    //     Navigator.SceneConfigs.FadeAndroid}
+    //  />
      )
    }
  }
