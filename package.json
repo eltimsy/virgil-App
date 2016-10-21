@@ -9,11 +9,8 @@
   "dependencies": {
     "react": "15.3.2",
     "react-native": "0.35.0",
-<<<<<<< HEAD
-    "tcomb-form-native": "^0.6.1"
-=======
+    "tcomb-form-native": "^0.6.1",
     "react-native-contacts": "^0.5.1"
->>>>>>> ae7dc0521caa2bcb4c747b04f7a4dfd884e7a42e
   },
   "jest": {
     "preset": "jest-react-native"
