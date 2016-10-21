@@ -50,6 +50,7 @@
      };
      this.userSignup = this.userSignup.bind(this);
      this.addContacts = this.addContacts.bind(this);
+     this.userLogin = this.userLogin.bind(this);
    }
    componentWillMount() {
      Contacts.getAll((err, contacts) => {
@@ -96,14 +97,15 @@
            'Content-Type': 'application/json'
          },
          body: JSON.stringify({
-           first_name: value.first,
-           last_name: value.last,
+           first_name: value.first_name,
+           last_name: value.last_name,
            password: value.password,
            email: value.email,
+           phone_number: '123456789',
            remember_me: value.remember
          })
        })
-       .then((res) => response.json())
+       .then((res) => res.json())
        .then((res) => {
          this.onValueChange(STORAGE_KEY, res.id_token)})
        .done();
