@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TouchableHighlight, Alert, StyleSheet } from 'react-native';
+import { View, Text, TouchableHighlight, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default class MyContacts extends Component {
   static propTypes = {
@@ -7,33 +7,21 @@ export default class MyContacts extends Component {
     addContacts: PropTypes.func.isRequired,
   }
 
-
   onPressOne() {
-    console.log("bye")
-    console.log(this.props.addContacts)
-    console.log(this.props.contact.phoneNumbers)
     if(this.props.contact.phoneNumbers.length > 0) {
       this.props.addContacts(this.props.contact.phoneNumbers[0].number, this.props.contact.givenName)
     }
   }
 
-
-
   render() {
-
     return (
       <View>
-        <Text>
-          {this.props.contact.givenName}
-        </Text>
-        <TouchableHighlight style={styles.button} onPress={this.onPressOne.bind(this)} underlayColor='red'>
-          <Text style={{
-             color: 'blue',
-             fontSize: 30,
-             textAlign: 'center'}}>
-             {this.props.contact.phoneNumbers.length > 0 ? this.props.contact.phoneNumbers[0].number : "NIL" }
-          </Text>
-        </TouchableHighlight>
+        <TouchableOpacity onPress={this.onPressOne.bind(this)} underlayColor='red'>
+          {this.props.contact.phoneNumbers.length > 0 ?
+            <Text style={styles.button}> {this.props.contact.givenName} </Text> :
+            <View></View>
+          }
+        </TouchableOpacity>
       </View>
     )
   }
@@ -41,9 +29,13 @@ export default class MyContacts extends Component {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: 'teal',
-    height: 40,
-    borderColor: 'teal',
-    justifyContent: 'center'
+    color: '#8FBB99',
+    backgroundColor: '#595A4A',
+    borderColor: '#B0FE76',
+    borderWidth: 2,
+    justifyContent: 'center',
+    borderRadius: 5,
+    fontSize: 30,
+    textAlign: 'center'
   }
 });
