@@ -8,17 +8,15 @@ export default class MyContacts extends Component {
   }
 
   onPressOne() {
-    if(this.props.contact.phoneNumbers.length > 0) {
-      this.props.addContacts(this.props.contact.phoneNumbers[0].number, this.props.contact.givenName)
-    }
+    this.props.addContacts(this.props.contact.phoneNumber, this.props.contact.givenName, this.props.contact.index)
   }
 
   render() {
     return (
       <View>
         <TouchableOpacity onPress={this.onPressOne.bind(this)} underlayColor='red'>
-          {this.props.contact.phoneNumbers.length > 0 ?
-            <Text style={styles.button}> {this.props.contact.givenName} </Text> :
+          {this.props.contact.empty !== 0 ?
+            <Text style={this.props.contact.press === true? styles.buttonPress: styles.button}> {this.props.contact.givenName} {this.props.contact.index} </Text> :
             <View></View>
           }
         </TouchableOpacity>
@@ -37,5 +35,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     fontSize: 30,
     textAlign: 'center'
-  }
+  },
+  buttonPress: {
+    color: 'black',
+    backgroundColor: 'red',
+    borderColor: '#B0FE76',
+    borderWidth: 2,
+    justifyContent: 'center',
+    borderRadius: 5,
+    fontSize: 30,
+    textAlign: 'center'
+  },
 });

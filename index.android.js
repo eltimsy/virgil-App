@@ -57,7 +57,20 @@
        if(err && err.type === 'permissionDenied'){
          // x.x
        } else {
-         this.setState({contactList: contacts})
+         let contactlist = contacts.map(function(contact, index) {
+           if(contact.phoneNumbers.length > 0) {
+             return({
+               phoneNumber: contact.phoneNumbers[0].number,
+               givenName: contact.givenName,
+               press: false,
+               empty: 1,
+               index: index
+             });
+           } else {
+             return {empty: 0};
+           }
+         })
+        this.setState({contactList: contactlist})
        }
      })
    }
@@ -142,7 +155,7 @@
        console.log(`AsyncStorage error: ${err}.`)
      }
    }
-   addContacts(phoneNum, name) {
+   addContacts(phoneNum, name, index) {
      let list = this.state.grouplist;
      let newcontact = true;
      let duplicate = null;
@@ -155,10 +168,12 @@
 
      if(newcontact === true) {
        list.push({name: name, number: phoneNum})
+       this.state.contactList[index].press = true;
        this.setState(this.state);
        Alert.alert('Added: ' + name);
      } else if (newcontact === false) {
        list = list.splice(duplicate, 1);
+        this.state.contactList[index].press = false;
        this.setState(this.state);
        Alert.alert('Deleted: ' + name);
      }
