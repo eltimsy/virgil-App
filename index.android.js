@@ -19,6 +19,9 @@
    email: t.String,
    remember_me: t.Boolean
  });
+ const NewNumber = t.struct({
+   number: t.String,
+ });
 
  let options = {};
 
@@ -51,6 +54,7 @@
      this.userSignup = this.userSignup.bind(this);
      this.addContacts = this.addContacts.bind(this);
      this.userLogin = this.userLogin.bind(this);
+     this.addNumber = this.addNumber.bind(this);
    }
    componentWillMount() {
      Contacts.getAll((err, contacts) => {
@@ -99,7 +103,6 @@
    }
 
    userSignup() {
-     console.log("I'm here!")
      let value = this.refs.form.getValue();
      Alert.alert(value.first_name)
      if (value) {
@@ -179,6 +182,15 @@
      }
    }
 
+   addNumber() {
+     let value = this.refs.form.getValue();
+     if(value) {
+       value.name = "";
+       this.state.grouplist.push(value)
+       this.setState(this.state);
+       console.log(value)
+     }
+   }
   render() {
     return (
       <ScrollView>
@@ -205,6 +217,20 @@
             <TouchableHighlight onPress={this._getProtectedQuote} style={styles.button}>
               <Text style={styles.buttonText}>Filler Text</Text>
             </TouchableHighlight>
+          </View>
+          <View  style={styles.container}>
+            <View style={styles.row}>
+              <Form
+                ref="form"
+                type={NewNumber}
+                options={options}
+              />
+            </View>
+            <View style={styles.row}>
+              <TouchableHighlight style={styles.button} onPress={this.addNumber} underlayColor='#99d9f4'>
+                <Text style={styles.buttonText}>Add Number</Text>
+              </TouchableHighlight>
+            </View>
           </View>
           <MyContacts
           contactList = {this.state.contactList}

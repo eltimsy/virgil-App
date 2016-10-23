@@ -19,7 +19,7 @@ export default class MyContacts extends Component {
         <View style={styles.group}>
           {this.props.grouplist.map(function(element) {
             return (<Text key = {uuid.v4()}>
-              {element.name} {element.number}
+              {element.name? element.name + "" + element.number: element.number}
             </Text>)
           })}
         </View>
