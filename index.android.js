@@ -43,6 +43,11 @@ class VirgilApp extends Component {
       }
     })
   }
+
+  responseToJson(response) {
+    return null;
+  }
+
   async onValueChange(item, value) {
     try {
       await AsyncStorage.setItem(item, value);
@@ -58,7 +63,8 @@ class VirgilApp extends Component {
       socket
         .emit('authenticate', {id_token: TOKEN})
         .on('authenticated', () => {
-          // logic goes here (the main app stuff)
+          this.state.logStatus = true;
+          this.setState(this.state);
         })
         .on('unauthenticated', (message) => {
           console.log(`Could not authenticate: ${JSON.stringify(message.data)}.`);
@@ -68,7 +74,7 @@ class VirgilApp extends Component {
   }
 
   userSignup() {
-    let value = this.refs.form.getValue();
+    let value = this.refs.signupform.getValue();
     Alert.alert(value.first_name)
     if (value) {
       fetch('https://virgil-is-the-restaurant-guide.herokuapp.com/users', {
@@ -84,7 +90,7 @@ class VirgilApp extends Component {
           email: value.email,
         })
       })
-      .then((res) => response.json())
+      .then((res) => res.json())
       .then((res) => {
         this.onValueChange(STORAGE_KEY, res.id_token)})
       .done();
@@ -94,7 +100,7 @@ class VirgilApp extends Component {
   userLogin() {
     let value = this.refs.form.getValue();
     if (value) {
-      fetch('https://virgil-is-the-restaurant-guide.herokuapp.com/sessions/create', {
+      fetch('https://virgil-is-the-restaurant-guide.herokuapp.com/users/sessions/create', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -107,6 +113,7 @@ class VirgilApp extends Component {
       })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res)
         this.onValueChange(STORAGE_KEY, res.id_token)
       })
       .done();
@@ -155,12 +162,14 @@ class VirgilApp extends Component {
     if (routeId === 'LoginPage') {
       return (
         <LoginPage
+          userLogin={this.userLogin}
           navigator={navigator} />
       );
     }
     if (routeId === 'SignupPage') {
       return (
         <SignupPage
+          userSignup={this.userSignup}
           navigator={navigator} />
       );
     }

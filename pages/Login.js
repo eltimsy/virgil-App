@@ -36,7 +36,7 @@ class LoginPage extends Component {
             />
           </View>
           <View style={styles.row}>
-            <TouchableHighlight style={styles.button} onPress={this.userLogin} underlayColor='#99d9f4'>
+            <TouchableHighlight style={styles.button} onPress={this.props.userLogin.bind(this)} underlayColor='#99d9f4'>
               <Text style={styles.buttonText}>Login</Text>
             </TouchableHighlight>
           </View>

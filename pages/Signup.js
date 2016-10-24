@@ -10,35 +10,29 @@ const UserForm = t.struct({
   last_name: t.String,
   email: t.String,
   password: t.String,
-  confirm_pass: t.String,
+  confirm_password: t.String,
 });
 const options = {};
 
 
 class SignupPage extends Component {
+
   render() {
-    return (
-      <Navigator
-        renderScene={this.renderScene.bind(this)}
-      />
-    );
-  }
-  renderScene(route, navigator) {
     return (
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.row}>
-            <Text style={styles.title}>New Account</Text>
+            <Text style={styles.title}>Create New Account:</Text>
           </View>
           <View style={styles.row}>
             <Form
-              ref="form"
+              ref="signupform"
               type={UserForm}
               options={options}
             />
           </View>
           <View style={styles.row}>
-            <TouchableHighlight style={styles.button} onPress={this.userSignup} underlayColor='#99d9f4'>
+            <TouchableHighlight style={styles.button} onPress={this.props.userSignup} underlayColor='#99d9f4'>
               <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableHighlight>
           </View>
@@ -46,6 +40,7 @@ class SignupPage extends Component {
       </ScrollView>
     );
   }
+
 }
 
 const styles = StyleSheet.create({
