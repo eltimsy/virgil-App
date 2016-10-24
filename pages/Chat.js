@@ -4,45 +4,42 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, View, Text, Navigator, TouchableHighlight, TouchableOpacity } from 'react-native';
 import t from 'tcomb-form-native';
 
-
 const Form = t.form.Form;
-const LoginForm = t.struct({
+const User = t.struct({
+  first_name: t.String,
+  last_name: t.String,
   email: t.String,
   password: t.String,
+  confirm_pass: t.String,
 });
-const options = {
-  auto: 'placeholders',
-  underlineColorAndroid: 'white',
-};
+const options = {};
 
-class LoginPage extends Component {
 
-  sendToSignUp() {
-    this.props.navigator.replace({id: 'SignupPage'});
-  }
-
+class ChatPage extends Component {
   render() {
+    return (
+      <Navigator
+        renderScene={this.renderScene.bind(this)}
+      />
+    );
+  }
+  renderScene(route, navigator) {
     return (
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.row}>
-            <Text style={styles.title}>Login</Text>
+            <Text style={styles.title}>New Account</Text>
           </View>
           <View style={styles.row}>
             <Form
               ref="form"
-              type={LoginForm}
+              type={User}
               options={options}
             />
           </View>
           <View style={styles.row}>
-            <TouchableHighlight style={styles.button} onPress={this.userLogin} underlayColor='#99d9f4'>
-              <Text style={styles.buttonText}>Login</Text>
-            </TouchableHighlight>
-          </View>
-          <View style={styles.row}>
-            <TouchableHighlight style={styles.button} onPress={this.sendToSignUp.bind(this)} underlayColor='#99d9f4'>
-              <Text style={styles.buttonText}>New User?</Text>
+            <TouchableHighlight style={styles.button} onPress={this.userSignup} underlayColor='#99d9f4'>
+              <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -80,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = LoginPage;
+module.exports = ChatPage;
