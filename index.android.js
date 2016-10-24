@@ -9,6 +9,7 @@
  import MyScene from './pages/MyScene';
  import MyContacts from './pages/MyContacts';
  const Contacts = require('react-native-contacts');
+ const uuid = require('react-native-uuid');
 
  const STORAGE_KEY = 'id_token';
  const Form = t.form.Form;
@@ -61,18 +62,22 @@
        if(err && err.type === 'permissionDenied'){
          // x.x
        } else {
-         let contactlist = contacts.map(function(contact, index) {
-           if(contact.phoneNumbers.length > 0) {
-             return({
-               phoneNumber: contact.phoneNumbers[0].number,
-               givenName: contact.givenName,
-               press: false,
-               empty: 1,
-               index: index
-             });
-           } else {
-             return {empty: 0};
-           }
+         let contactlist = contacts.filter(function(contact){
+           return contact.phoneNumbers.length > 0;
+         }).map(function(contact, index) {
+          //    let wordOneLetter = contact.givenName.charAt(0)
+          //    if(index !== 0) {
+          //      let wordTwoletter = contactlist[index - 1].givenName.charAt(0)
+          //    }
+          //    if(contact.givenName.charAt(0) ===)
+           return({
+             phoneNumber: contact.phoneNumbers[0].number,
+             givenName: contact.givenName,
+             press: false,
+             empty: 1,
+             index: index,
+             id: uuid.v4(),
+           });
          })
         this.setState({contactList: contactlist})
        }
@@ -173,12 +178,10 @@
        list.push({name: name, number: phoneNum})
        this.state.contactList[index].press = true;
        this.setState(this.state);
-       Alert.alert('Added: ' + name);
      } else if (newcontact === false) {
        list = list.splice(duplicate, 1);
         this.state.contactList[index].press = false;
        this.setState(this.state);
-       Alert.alert('Deleted: ' + name);
      }
    }
 
@@ -193,7 +196,7 @@
    }
   render() {
     return (
-      <ScrollView>
+      <ScrollView stlye={{backroundColor: '#e3e6e0'}}>
         <View  style={styles.container}>
           <View style={styles.row}>
             <Text style={styles.title}>Signup/Login</Text>
@@ -248,7 +251,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 50,
     padding: 20,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#e3e6e0',
   },
   title: {
     fontSize: 30,

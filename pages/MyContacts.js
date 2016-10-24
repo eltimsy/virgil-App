@@ -17,17 +17,18 @@ export default class MyContacts extends Component {
       <View style={{flex: 1}}>
 
         <View style={styles.group}>
-          {this.props.grouplist.map(function(element) {
-            return (<Text key = {uuid.v4()}>
+          {this.props.grouplist.map(function(element,index) {
+            return (<Text key = {index}>
               {element.name? element.name + "" + element.number: element.number}
             </Text>)
           })}
         </View>
-        <View style={{flex: 2, flexDirection: 'column'}}>
+
+        <View style={styles.contacts}>
           {this.props.contactList.map(function(contact) {
             return (<MyContact
               contact = {contact}
-              key = {uuid.v4()}
+              key = {contact.id}
               addContacts = {addcontacts}
             />)
           })}
@@ -43,5 +44,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     backgroundColor: 'lightblue',
+  },
+  contacts: {
+    flex: 2,
+    backgroundColor: 'white',
   },
 });
