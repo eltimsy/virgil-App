@@ -14,9 +14,7 @@ const Contacts = require('react-native-contacts');
 const STORAGE_KEY = 'id_token';
 
 const options = {};
-// const NewNumber = t.struct({
-//   number: t.String,
-// });
+
 
 class VirgilApp extends Component {
   constructor(props) {
@@ -26,10 +24,8 @@ class VirgilApp extends Component {
       grouplist: [],
       logStatus: false,
     };
-    this.userSignup = this.userSignup.bind(this);
     this.addContacts = this.addContacts.bind(this);
-    this.userLogin = this.userLogin.bind(this);
-    // this.addNumber = this.addNumber.bind(this);
+    this.addNumber = this.addNumber.bind(this);
   }
 
   componentWillMount() {
@@ -165,15 +161,13 @@ class VirgilApp extends Component {
        this.setState(this.state);
      }
    }
-  //  addNumber() {
-  //    let value = this.refs.form.getValue();
-  //    if(value) {
-  //      value.name = "";
-  //      this.state.grouplist.push(value)
-  //      this.setState(this.state);
-  //      console.log(value)
-  //    }
-  //  }
+   addNumber(value) {
+     if(value) {
+       value.name = "";
+       this.state.grouplist.push(value)
+       this.setState(this.state);
+     }
+   }
 
   render() {
     const routes = [
@@ -225,7 +219,8 @@ class VirgilApp extends Component {
           navigator={navigator}
           contactList = {this.state.contactList}
           addContacts = {this.addContacts}
-          grouplist = {this.state.grouplist} />
+          grouplist = {this.state.grouplist}
+          addNumber = {this.addNumber}/>
       );
     }
   }

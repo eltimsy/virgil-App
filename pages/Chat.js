@@ -1,8 +1,9 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Text, Navigator, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, View,TextInput, Text, Navigator, TouchableHighlight, TouchableOpacity } from 'react-native';
 import t from 'tcomb-form-native';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 const Form = t.form.Form;
 const User = t.struct({
@@ -12,10 +13,25 @@ const User = t.struct({
   password: t.String,
   confirm_pass: t.String,
 });
+const Message = t.struct({
+  message: t.String,
+})
 const options = {};
 
 
 class ChatPage extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      text: "",
+      messages: [],
+    };
+    this.handleText = this.handleText.bind(this)
+  }
+  handleText(){
+    this.state.messages.push(this.state.text);
+    this.setState(this.state);
+  }
   render() {
     return (
       <Navigator
@@ -23,42 +39,61 @@ class ChatPage extends Component {
       />
     );
   }
+
   renderScene(route, navigator) {
     return (
-      <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.row}>
-            <Text style={styles.title}>New Account</Text>
+      <View style={{flex: 1, backgroundColor: 'white'}}>
+
+        <KeyboardSpacer />
+        <View style={styles.chatbot}><Text style={styles.bottitle}>ChatBot</Text></View>
+        <ScrollView style={{flex:8, backgroundColor: 'white'}}>
+          <View style={styles.container}>
+            {this.state.messages.map(function(element, index) {
+              return (<Text key = {index}>
+                {element}
+              </Text>)
+            })}
           </View>
-          <View style={styles.row}>
-            <Form
-              ref="form"
-              type={User}
-              options={options}
-            />
-          </View>
-          <View style={styles.row}>
-            <TouchableHighlight style={styles.button} onPress={this.userSignup} underlayColor='#99d9f4'>
-              <Text style={styles.buttonText}>Sign Up</Text>
-            </TouchableHighlight>
-          </View>
+        </ScrollView>
+        <View style={styles.messagebox}>
+          <TextInput
+            style={styles.textinputbox}
+            onChangeText={(text) => this.setState({text})}
+            value={this.state.text}
+            onSubmitEditing={this.handleText}
+          />
         </View>
-      </ScrollView>
+
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  chatbot: {
+    flex: 1,
+    backgroundColor: 'gray',
+  },
+  messagebox: {
+    flex: 1,
+    marginBottom: -15,
+    marginRight: 5,
+    marginLeft: 5,
+  },
+  textinputbox: {
+    height: 40,
+    borderRadius: 5,
+    backgroundColor: '#e4e4e4',
+  },
+  bottitle: {
+    fontSize: 30,
+    textAlign: 'center',
+    paddingTop: 10,
+  },
   container: {
     justifyContent: 'center',
-    marginTop: 50,
     padding: 20,
     backgroundColor: '#ffffff',
-  },
-  title: {
-    fontSize: 30,
-    alignSelf: 'center',
-    marginBottom: 30,
   },
   buttonText: {
     fontSize: 18,

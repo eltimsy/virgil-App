@@ -11,10 +11,6 @@ export default class MyContacts extends Component {
     this.props.addContacts(this.props.contact.phoneNumber, this.props.contact.givenName, this.props.contact.index)
   }
 
-  componentWillMount() {
-    console.log(this.props.contact.givenName)
-  }
-
   render() {
 
     return (
@@ -38,7 +34,7 @@ const styles = StyleSheet.create({
   },
   buttonPress: {
     color: 'black',
-    backgroundColor: 'lightblue',
+    backgroundColor: '#96a2e8',
     borderColor: '#e3e6e0',
     borderBottomWidth: 2,
     justifyContent: 'center',
