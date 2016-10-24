@@ -1,24 +1,49 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TouchableHighlight } from 'react-native';
+import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import MyContact from './MyContact';
+const uuid = require('react-native-uuid');
 
 
-export default class ContactsPage extends Component {
+export default class MyContacts extends Component {
   static propTypes = {
     contactList: PropTypes.array.isRequired,
     addContacts: PropTypes.func.isRequired,
+    grouplist: PropTypes.array.isRequired,
   }
 
   render() {
     let addcontacts = this.props.addContacts
     return (
       <View style={{flex: 1}}>
+        {/* <View  style={styles.container}>
+            <View style={styles.row}>
+              <Form
+                ref="form"
+                type={NewNumber}
+                options={options}
+              />
+            </View>
+            <View style={styles.row}>
+              <TouchableHighlight style={styles.button} onPress={this.addNumber} underlayColor='#99d9f4'>
+                <Text style={styles.buttonText}>Add Number</Text>
+              </TouchableHighlight>
+            </View>
+          </View> */}
 
-        <View style={{flex: 2, flexDirection: 'column'}}>
-          {this.props.contactList.map(function(contact, index) {
+
+        <View style={styles.group}>
+          {this.props.grouplist.map(function(element,index) {
+            return (<Text key = {index}>
+              {element.name? element.name + "" + element.number: element.number}
+            </Text>)
+          })}
+        </View>
+
+        <View style={styles.contacts}>
+          {this.props.contactList.map(function(contact) {
             return (<MyContact
               contact = {contact}
-              key = {index}
+              key = {contact.id}
               addContacts = {addcontacts}
             />)
           })}
@@ -28,3 +53,15 @@ export default class ContactsPage extends Component {
     )
   }
 }
+const styles = StyleSheet.create({
+  group: {
+    borderColor: 'black',
+    borderRadius: 5,
+    justifyContent: 'center',
+    backgroundColor: 'lightblue',
+  },
+  contacts: {
+    flex: 2,
+    backgroundColor: 'white',
+  },
+});

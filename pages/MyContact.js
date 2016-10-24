@@ -11,39 +11,38 @@ export default class MyContacts extends Component {
     this.props.addContacts(this.props.contact.phoneNumber, this.props.contact.givenName, this.props.contact.index)
   }
 
+  componentWillMount() {
+    console.log(this.props.contact.givenName)
+  }
+
   render() {
+
     return (
-      <View>
-        <TouchableOpacity onPress={this.onPressOne.bind(this)} underlayColor='red'>
-          {this.props.contact.empty !== 0 ?
-            <Text style={this.props.contact.press === true? styles.buttonPress: styles.button}> {this.props.contact.givenName} {this.props.contact.index} </Text> :
-            <View></View>
-          }
-        </TouchableOpacity>
-      </View>
+
+      <TouchableHighlight onPress={this.onPressOne.bind(this)} underlayColor='red'>
+        <Text style={this.props.contact.press === true? styles.buttonPress: styles.button}> {this.props.contact.givenName} </Text>
+      </TouchableHighlight>
+
     )
   }
 }
 
 const styles = StyleSheet.create({
   button: {
-    color: '#8FBB99',
-    backgroundColor: '#595A4A',
-    borderColor: '#B0FE76',
-    borderWidth: 2,
+    color: 'black',
+    borderColor: '#e3e6e0',
+    borderBottomWidth: 2,
     justifyContent: 'center',
-    borderRadius: 5,
-    fontSize: 30,
-    textAlign: 'center'
+    fontSize: 20,
+    padding: 5,
   },
   buttonPress: {
     color: 'black',
-    backgroundColor: 'red',
-    borderColor: '#B0FE76',
-    borderWidth: 2,
+    backgroundColor: 'lightblue',
+    borderColor: '#e3e6e0',
+    borderBottomWidth: 2,
     justifyContent: 'center',
-    borderRadius: 5,
-    fontSize: 30,
-    textAlign: 'center'
+    fontSize: 20,
+    padding: 5,
   },
 });
