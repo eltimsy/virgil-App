@@ -33,6 +33,7 @@ class VirgilApp extends Component {
     this.addNumber = this.addNumber.bind(this);
     this.onLogAttempt = this.onLogAttempt.bind(this);
     this.getNewRoute = this.getNewRoute.bind(this);
+    this.chatEnds = this.chatEnds.bind(this);
   }
 
   componentWillMount() {
@@ -177,6 +178,10 @@ class VirgilApp extends Component {
     }
   }
 
+  chatEnds() {
+    this.setState({chatOn: false});
+  }
+
   addContacts(phoneNum, name, index) {
     let list = this.state.grouplist;
     let newcontact = true;
@@ -260,7 +265,8 @@ class VirgilApp extends Component {
           getNewRoute={this.getNewRoute}
           routeName={this.state.routeName}
           socket={this.state.socket}
-          navigator={navigator} />
+          navigator={navigator}
+          chatEnds={this.chatEnds} />
       );
     }
     if (routeId === 'ContactsPage') {
