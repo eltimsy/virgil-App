@@ -1,9 +1,11 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View,TextInput, Text, Navigator, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { Dimensions } from 'react-native';
+import { Keyboard } from 'react-native';
+import { DeviceEventEmitter,ScrollView, StyleSheet, View,TextInput, Text, Navigator, TouchableHighlight, TouchableOpacity } from 'react-native';
 import t from 'tcomb-form-native';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
+import KeyboardSpacer from './KeyboardSpacer';
 
 const Form = t.form.Form;
 const User = t.struct({
@@ -25,12 +27,27 @@ class ChatPage extends Component {
     this.state = {
       text: "",
       messages: [],
+      keyboardstatus: false,
     };
     this.handleText = this.handleText.bind(this)
+    this.handlekeystate = this.handlekeystate.bind(this)
   }
+
   handleText(){
     this.state.messages.push(this.state.text);
     this.setState(this.state);
+  }
+  handlekeystate(value){
+    console.log(value)
+    if(value === true) {
+      this.setState({
+        keyboardstatus: true
+      })
+    } else {
+      this.setState({
+        keyboardstatus: false
+      })
+    }
   }
   render() {
     return (
@@ -44,8 +61,10 @@ class ChatPage extends Component {
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
 
-        <KeyboardSpacer />
-        <View style={styles.chatbot}><Text style={styles.bottitle}>ChatBot</Text></View>
+        <KeyboardSpacer handlekey = {this.handlekeystate}/>
+        <View style={styles.chatbot}>
+          <Text style={this.state.keyboardstatus? styles.botsmall : styles.bottitle}>ChatBot</Text>
+        </View>
         <ScrollView style={{flex:8, backgroundColor: 'white'}}>
           <View style={styles.container}>
             {this.state.messages.map(function(element, index) {
@@ -55,7 +74,7 @@ class ChatPage extends Component {
             })}
           </View>
         </ScrollView>
-        <View style={styles.messagebox}>
+        <View style={this.state.keyboardstatus? styles.messageboxsmall : styles.messagebox}>
           <TextInput
             style={styles.textinputbox}
             onChangeText={(text) => this.setState({text})}
@@ -76,39 +95,35 @@ const styles = StyleSheet.create({
   },
   messagebox: {
     flex: 1,
-    marginBottom: -15,
     marginRight: 5,
     marginLeft: 5,
+    marginBottom: -19,
   },
   textinputbox: {
     height: 40,
     borderRadius: 5,
     backgroundColor: '#e4e4e4',
   },
+  messageboxsmall:{
+    flex: 1,
+    marginRight: 5,
+    marginLeft: 5,
+    marginBottom: 12,
+  },
   bottitle: {
     fontSize: 30,
     textAlign: 'center',
     paddingTop: 10,
   },
+  botsmall: {
+    fontSize: 15,
+    textAlign: 'center',
+    paddingTop: 5,
+  },
   container: {
     justifyContent: 'center',
     padding: 20,
     backgroundColor: '#ffffff',
-  },
-  buttonText: {
-    fontSize: 18,
-    color: 'white',
-    alignSelf: 'center',
-  },
-  button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
   },
 });
 
