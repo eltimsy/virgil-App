@@ -5,12 +5,13 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 
 class SplashPage extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     let navigator = this.props.navigator;
-    let routeId = this.props.logStatus ? 'ChatPage' : 'LoginPage';
-    setTimeout(() => {
-      navigator.replace({id: 'ChatPage'});
-    }, 2000);
+    this.props.getNewRoute(() => {
+      setTimeout(() => {
+        navigator.replace({id: this.props.routeName});
+      }, 300);
+    });
   }
 
   render() {
@@ -27,6 +28,7 @@ class SplashPage extends Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

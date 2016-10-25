@@ -12,10 +12,24 @@ const LoginForm = t.struct({
 });
 const options = {
   auto: 'placeholders',
-  underlineColorAndroid: 'white',
+  underlineColorAndroid: 'transparent',
 };
 
 class LoginPage extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  handleLogin() {
+    let navigator = this.props.navigator;
+    let value = this.refs.form.getValue();
+    this.props.userLogin(value, () => {
+      this.props.getNewRoute(() => {
+        console.log(this.props.routeName)
+        navigator.replace({id: this.props.routeName});
+      });
+    });
+  }
 
   sendToSignUp() {
     this.props.navigator.replace({id: 'SignupPage'});
@@ -36,7 +50,7 @@ class LoginPage extends Component {
             />
           </View>
           <View style={styles.row}>
-            <TouchableHighlight style={styles.button} onPress={this.props.userLogin.bind(this)} underlayColor='#99d9f4'>
+            <TouchableHighlight style={styles.button} onPress={this.handleLogin.bind(this)} underlayColor='#99d9f4'>
               <Text style={styles.buttonText}>Login</Text>
             </TouchableHighlight>
           </View>

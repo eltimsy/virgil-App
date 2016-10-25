@@ -31,6 +31,7 @@ class VirgilApp extends Component {
     this.addContacts = this.addContacts.bind(this);
     this.addNumber = this.addNumber.bind(this);
     this.onLogAttempt = this.onLogAttempt.bind(this);
+    this.getNewRoute = this.getNewRoute.bind(this);
   }
 
   componentWillMount() {
@@ -60,19 +61,31 @@ class VirgilApp extends Component {
     })
   }
 
-  // getNewRoute() {
-  //   if ()
-  // }
+  getNewRoute(_done) {
+    if (this.state.logStatus === true) {
+      if (this.state.chatOn === true) {
+        this.state.routeName = 'ChatPage';
+      } else {
+        this.state.routeName = 'ContactsPage';
+      }
+    } else {
+      this.state.routeName = 'LoginPage';
+      }
+    this.setState(this.state);
+    _done();
+  }
 
-  async onValueChange(item, value) {
+  async onValueChange(item, value, _done) {
     try {
       await AsyncStorage.setItem(item, value);
+      _done();
     } catch (err) {
       console.log(`AsyncStorage error: ${err.message}`);
+      _done();
     }
   }
 
-  async onLogAttempt() {
+  async onLogAttempt(_done) {
     let TOKEN = await AsyncStorage.getItem(STORAGE_KEY);
     socketConfig.query = `token=${TOKEN}`;
     const socket = io.connect(Configs.host, socketConfig);
@@ -81,16 +94,19 @@ class VirgilApp extends Component {
         .on('authenticated', () => {
           this.state.logStatus = true;
           this.setState(this.state);
+          _done();
         })
         .on('unauthorized', (message) => {
           console.log(`Could not authenticate: ${JSON.stringify(message.data)}.`);
           Alert.alert(message.data.type);
+          this.state.logStatus = false;
+          this.setState(this.state);
+          _done();
         })
     });
   }
 
-  userSignup() {
-    let value = this.refs.form.getValue();
+  userSignup(value, _done) {
     if (value) {
       fetch(`${Configs.host}/users`, {
         method: 'POST',
@@ -108,16 +124,15 @@ class VirgilApp extends Component {
       })
       .then((res) => {
         let token = JSON.parse(res._bodyText).id_token;
-        this.props.onValueChange(STORAGE_KEY, token);
+        this.onValueChange(STORAGE_KEY, token, () => {
+          this.onLogAttempt(_done);
+        });
       })
-      .done((res) => {
-        this.props.onLogAttempt();
-      });
+      .done()
     }
   }
 
-  userLogin() {
-    let value = this.refs.form.getValue();
+  userLogin(value, _done) {
     if (value) {
       fetch(`${Configs.host}/users/sessions/create`, {
         method: 'POST',
@@ -132,11 +147,11 @@ class VirgilApp extends Component {
       })
       .then((res) => {
         let token = JSON.parse(res._bodyText).id_token;
-        this.props.onValueChange(STORAGE_KEY, token);
+        this.onValueChange(STORAGE_KEY, token, () => {
+          this.onLogAttempt(_done);
+        });
       })
-      .done((res) => {
-        this.props.onLogAttempt();
-      });
+      .done()
     }
   }
 
@@ -198,7 +213,8 @@ class VirgilApp extends Component {
     if (routeId === 'SplashPage') {
       return (
         <SplashPage
-          logStatus={this.state.logStatus}
+          getNewRoute={this.getNewRoute}
+          routeName={this.state.routeName}
           navigator={navigator} />
       );
     }
@@ -208,6 +224,8 @@ class VirgilApp extends Component {
           userLogin={this.userLogin}
           onValueChange={this.onValueChange}
           onLogAttempt={this.onLogAttempt}
+          getNewRoute={this.getNewRoute}
+          routeName={this.state.routeName}
           navigator={navigator} />
       );
     }
@@ -217,6 +235,8 @@ class VirgilApp extends Component {
           userSignup={this.userSignup}
           onValueChange={this.onValueChange}
           onLogAttempt={this.onLogAttempt}
+          getNewRoute={this.getNewRoute}
+          routeName={this.state.routeName}
           navigator={navigator} />
       );
     }
@@ -224,6 +244,8 @@ class VirgilApp extends Component {
       return (
         <ChatPage
           onLogAttempt={this.onLogAttempt}
+          getNewRoute={this.getNewRoute}
+          routeName={this.state.routeName}
           navigator={navigator} />
       );
     }
