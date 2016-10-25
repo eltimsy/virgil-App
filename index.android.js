@@ -26,7 +26,8 @@ class VirgilApp extends Component {
       grouplist: [],
       routeName: 'SplashPage',
       logStatus: false,
-      chatOn: true
+      chatOn: true,
+      socket: null,
     };
     this.addContacts = this.addContacts.bind(this);
     this.addNumber = this.addNumber.bind(this);
@@ -40,22 +41,33 @@ class VirgilApp extends Component {
       } else {
         let contactlist = contacts.filter(function(contact){
           return contact.phoneNumbers.length > 0;
-        }).map(function(contact, index) {
-        //    let wordOneLetter = contact.givenName.charAt(0)
-        //    if(index !== 0) {
-        //      let wordTwoletter = contactlist[index - 1].givenName.charAt(0)
-        //    }
-        //    if(contact.givenName.charAt(0) ===)
-          return({
-            phoneNumber: contact.phoneNumbers[0].number,
-            givenName: contact.givenName,
-            press: false,
-            empty: 1,
-            index: index,
-            id: uuid.v4(),
-          });
         })
-        this.setState({contactList: contactlist})
+        let contactlistmapped = contactlist.map(function(contact, index) {
+           let wordOneLetter = contact.givenName.charAt(0).toUpperCase();
+           let wordTwoletter = 0
+           if(index > 0) {
+             wordTwoletter = contactlist[index - 1].givenName.charAt(0).toUpperCase();
+           }
+           if (wordOneLetter !== wordTwoletter) {
+             return({
+               phoneNumber: contact.phoneNumbers[0].number,
+               givenName: contact.givenName,
+               press: false,
+               index: index,
+               letter: wordOneLetter,
+               id: uuid.v4()
+             });
+           } else {
+            return({
+              phoneNumber: contact.phoneNumbers[0].number,
+              givenName: contact.givenName,
+              press: false,
+              index: index,
+              id: uuid.v4(),
+            });
+          }
+        })
+        this.setState({contactList: contactlistmapped})
       }
     })
   }
@@ -76,6 +88,7 @@ class VirgilApp extends Component {
     let TOKEN = await AsyncStorage.getItem(STORAGE_KEY);
     socketConfig.query = `token=${TOKEN}`;
     const socket = io.connect(Configs.host, socketConfig);
+    this.setState({socket: socket});
     socket.on('connect', () => {
       socket.emit('authenticate', {token: TOKEN})
         .on('authenticated', () => {
@@ -161,11 +174,11 @@ class VirgilApp extends Component {
     })
 
     if (newcontact === true) {
-       list.push({name: name, number: phoneNum})
+       this.state.grouplist.push({name: name, number: phoneNum})
        this.state.contactList[index].press = true;
        this.setState(this.state);
      } else if (newcontact === false) {
-       list = list.splice(duplicate, 1);
+       this.state.grouplist = this.state.grouplist.splice(duplicate, 1);
         this.state.contactList[index].press = false;
        this.setState(this.state);
      }

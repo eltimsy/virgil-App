@@ -1,25 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Dimensions } from 'react-native';
-import { Keyboard } from 'react-native';
-import { DeviceEventEmitter,ScrollView, StyleSheet, View,TextInput, Text, Navigator, TouchableHighlight, TouchableOpacity } from 'react-native';
-import t from 'tcomb-form-native';
+import { ScrollView, StyleSheet, View,TextInput, Text, Navigator, TouchableHighlight } from 'react-native';
 import KeyboardSpacer from './KeyboardSpacer';
-
-const Form = t.form.Form;
-const User = t.struct({
-  first_name: t.String,
-  last_name: t.String,
-  email: t.String,
-  password: t.String,
-  confirm_pass: t.String,
-});
-const Message = t.struct({
-  message: t.String,
-})
-const options = {};
-
 
 class ChatPage extends Component {
   constructor(props) {
@@ -72,7 +55,7 @@ class ChatPage extends Component {
         <ScrollView style={{flex:8, backgroundColor: 'white'}}>
           <View style={styles.container}>
             {this.state.messages.map(function(element, index) {
-              return (<Text style={element.type === 1?styles.message : styles.botmessage} key = {index}>
+              return (<Text style={element.type === 1? styles.message : styles.botmessage} key = {index}>
                 {element.text}
               </Text>)
             })}

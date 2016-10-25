@@ -9,7 +9,7 @@ class SplashPage extends Component {
     let navigator = this.props.navigator;
     let routeId = this.props.logStatus ? 'ChatPage' : 'LoginPage';
     setTimeout(() => {
-      navigator.replace({id: 'ChatPage'});
+      navigator.replace({id: 'ContactsPage'});
     }, 2000);
   }
 
