@@ -22,7 +22,7 @@ const options = {};
 
 
 class ChatPage extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       text: "",
@@ -33,11 +33,15 @@ class ChatPage extends Component {
     this.handlekeystate = this.handlekeystate.bind(this)
   }
 
-  handleText(){
-    this.state.messages.push(this.state.text);
-    this.setState(this.state);
+  handleText() {
+    if(this.state.text) {
+      this.state.messages.push({text: this.state.text, type: 1});
+      this.state.messages.push({text: "response", type: 2});
+      this.state.text = "";
+      this.setState(this.state);
+    }
   }
-  handlekeystate(value){
+  handlekeystate(value) {
     console.log(value)
     if(value === true) {
       this.setState({
@@ -68,14 +72,15 @@ class ChatPage extends Component {
         <ScrollView style={{flex:8, backgroundColor: 'white'}}>
           <View style={styles.container}>
             {this.state.messages.map(function(element, index) {
-              return (<Text key = {index}>
-                {element}
+              return (<Text style={element.type === 1?styles.message : styles.botmessage} key = {index}>
+                {element.text}
               </Text>)
             })}
           </View>
         </ScrollView>
         <View style={this.state.keyboardstatus? styles.messageboxsmall : styles.messagebox}>
           <TextInput
+            underlineColorAndroid={'transparent'}
             style={styles.textinputbox}
             onChangeText={(text) => this.setState({text})}
             value={this.state.text}
@@ -93,21 +98,38 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'gray',
   },
+  message:{
+    borderWidth: 1,
+    borderRadius: 4,
+    backgroundColor: '#a5f1b7',
+    borderColor: '#a5f1b7',
+    padding: 5,
+    width: 200,
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  botmessage:{
+    alignSelf: 'flex-end',
+    borderWidth: 1,
+    borderRadius: 4,
+    backgroundColor: '#a1e3e4',
+    borderColor: '#a1e3e4',
+    padding: 5,
+    width: 200,
+    fontSize: 20,
+    marginBottom: 10,
+  },
   messagebox: {
     flex: 1,
-    marginRight: 5,
-    marginLeft: 5,
     marginBottom: -19,
   },
   textinputbox: {
+    paddingLeft: 10,
     height: 40,
-    borderRadius: 5,
     backgroundColor: '#e4e4e4',
   },
   messageboxsmall:{
     flex: 1,
-    marginRight: 5,
-    marginLeft: 5,
     marginBottom: 12,
   },
   bottitle: {

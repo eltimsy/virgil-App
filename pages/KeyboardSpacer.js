@@ -27,7 +27,7 @@ export default class KeyboardSpacer extends Component {
   };
 
   static defaultProps = {
-    topSpacing: -2,
+    topSpacing: -5,
     // From: https://medium.com/man-moon/writing-modern-react-native-ui-e317ff956f02
     animationConfig: {
       duration: 500,
