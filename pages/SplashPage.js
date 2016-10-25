@@ -8,9 +8,9 @@ class SplashPage extends Component {
   componentWillMount() {
     let navigator = this.props.navigator;
     let routeId = this.props.logStatus ? 'ChatPage' : 'LoginPage';
-    // setTimeout(() => {
-    //   navigator.replace({id: 'ChatPage'});
-    // }, 2000);
+    setTimeout(() => {
+      navigator.replace({id: 'ChatPage'});
+    }, 2000);
   }
 
   render() {
