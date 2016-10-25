@@ -45,9 +45,7 @@ export default class ContactsPage extends Component {
 
           <View style={styles.group}>
             {this.props.grouplist.map(function(element,index) {
-              return
-              (<Text key = {index}>
-                {element.name}
+              return (<Text key = {index}>
                 {element.name? element.name + "" + element.number: element.number}
               </Text>)
             })}
@@ -81,7 +79,7 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 36,
-    backgroundColor: '#e3e6e0',
+    backgroundColor: '#48BBEC',
     borderColor: '#48BBEC',
     borderWidth: 1,
     borderRadius: 8,

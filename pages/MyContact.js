@@ -18,7 +18,7 @@ export default class MyContacts extends Component {
         <Text style={styles.letter}>
           {this.props.contact.letter? this.props.contact.letter: null}
         </Text>
-        <TouchableHighlight onPress={this.onPressOne.bind(this)} underlayColor='red'>
+        <TouchableHighlight onPress={this.onPressOne.bind(this)} underlayColor='blue'>
           <Text style={this.props.contact.press === true? styles.buttonPress: styles.button}>
             {this.props.contact.givenName}
           </Text>

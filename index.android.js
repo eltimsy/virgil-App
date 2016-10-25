@@ -174,12 +174,12 @@ class VirgilApp extends Component {
     })
 
     if (newcontact === true) {
-       this.state.grouplist.push({name: name, number: phoneNum})
+       list.push({name: name, number: phoneNum})
        this.state.contactList[index].press = true;
        this.setState(this.state);
      } else if (newcontact === false) {
-       this.state.grouplist = this.state.grouplist.splice(duplicate, 1);
-        this.state.contactList[index].press = false;
+       list = list.splice(duplicate, 1);
+       this.state.contactList[index].press = false;
        this.setState(this.state);
      }
    }
