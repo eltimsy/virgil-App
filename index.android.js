@@ -259,6 +259,7 @@ class VirgilApp extends Component {
           onLogAttempt={this.onLogAttempt}
           getNewRoute={this.getNewRoute}
           routeName={this.state.routeName}
+          socket={this.state.socket}
           navigator={navigator} />
       );
     }

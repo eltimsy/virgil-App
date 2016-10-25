@@ -16,16 +16,23 @@ class ChatPage extends Component {
     this.handlekeystate = this.handlekeystate.bind(this)
   }
 
+  componentDidMount() {
+    this.props.socket.on('message', (data) => {
+      this.state.messages.push(data);
+    })
+  }
+
   handleText() {
     if(this.state.text) {
-      this.state.messages.push({text: this.state.text, type: 1});
-      this.state.messages.push({text: "response", type: 2});
+      let message = {text: this.state.text, type: 'client'};
+      this.state.messages.push(message);
+      this.props.socket.emit('message', message)
       this.state.text = "";
       this.setState(this.state);
+
     }
   }
   handlekeystate(value) {
-    console.log(value)
     if(value === true) {
       this.setState({
         keyboardstatus: true
@@ -55,7 +62,7 @@ class ChatPage extends Component {
         <ScrollView style={{flex:8, backgroundColor: 'white'}}>
           <View style={styles.container}>
             {this.state.messages.map(function(element, index) {
-              return (<Text style={element.type === 1? styles.message : styles.botmessage} key = {index}>
+              return (<Text style={element.type === 'client'? styles.message : styles.botmessage} key = {index}>
                 {element.text}
               </Text>)
             })}
