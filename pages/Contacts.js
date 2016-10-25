@@ -43,23 +43,23 @@ export default class ContactsPage extends Component {
               </TouchableHighlight>
             </View>
 
-        <View style={styles.group}>
-          {this.props.grouplist.map(function(element,index) {
-            return (<Text key = {index}>
-              {element.name? element.name + "" + element.number: element.number}
-            </Text>)
-          })}
-        </View>
+          <View style={styles.group}>
+            {this.props.grouplist.map(function(element,index) {
+              return (<Text key = {index}>
+                {element.name? element.name + "" + element.number: element.number}
+              </Text>)
+            })}
+          </View>
 
-        <View style={styles.contacts}>
-          {this.props.contactList.map(function(contact) {
-            return (<MyContact
-              contact = {contact}
-              key = {contact.id}
-              addContacts = {addcontacts}
-            />)
-          })}
-        </View>
+          <View style={styles.contacts}>
+            {this.props.contactList.map(function(contact) {
+              return (<MyContact
+                contact = {contact}
+                key = {contact.id}
+                addContacts = {addcontacts}
+              />)
+            })}
+          </View>
         </View>
       </ScrollView>
     )
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 36,
-    backgroundColor: '#e3e6e0',
+    backgroundColor: '#48BBEC',
     borderColor: '#48BBEC',
     borderWidth: 1,
     borderRadius: 8,

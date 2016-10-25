@@ -14,16 +14,25 @@ export default class MyContacts extends Component {
   render() {
 
     return (
-
-      <TouchableHighlight onPress={this.onPressOne.bind(this)} underlayColor='red'>
-        <Text style={this.props.contact.press === true? styles.buttonPress: styles.button}> {this.props.contact.givenName} </Text>
-      </TouchableHighlight>
+      <View>
+        <Text style={styles.letter}>
+          {this.props.contact.letter? this.props.contact.letter: null}
+        </Text>
+        <TouchableHighlight onPress={this.onPressOne.bind(this)} underlayColor='blue'>
+          <Text style={this.props.contact.press === true? styles.buttonPress: styles.button}>
+            {this.props.contact.givenName}
+          </Text>
+        </TouchableHighlight>
+      </View>
 
     )
   }
 }
 
 const styles = StyleSheet.create({
+  letter: {
+    backgroundColor: '#e3e6e0',
+  },
   button: {
     color: 'black',
     borderColor: '#e3e6e0',
