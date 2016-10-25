@@ -1,6 +1,8 @@
-
 import React, { Component } from 'react';
 import { Alert, AppRegistry, ScrollView, AsyncStorage, Text, TextInput, Image, View, StyleSheet, Navigator, TouchableHighlight } from 'react-native';
+import socketConfig from './utils/SocketUtil';
+import io from './utils/SocketUtil';
+import ConfigFile from './config.json';
 
 import SplashPage from './pages/SplashPage';
 import LoginPage from './pages/Login';
@@ -12,9 +14,9 @@ const uuid = require('react-native-uuid');
 
 const Contacts = require('react-native-contacts');
 const STORAGE_KEY = 'id_token';
+const Configs = ConfigFile.development;
 
 const options = {};
-
 
 class VirgilApp extends Component {
   constructor(props) {
@@ -22,38 +24,45 @@ class VirgilApp extends Component {
     this.state = {
       contactList: [],
       grouplist: [],
+      routeName: 'SplashPage',
       logStatus: false,
+      chatOn: true
     };
     this.addContacts = this.addContacts.bind(this);
     this.addNumber = this.addNumber.bind(this);
+    this.onLogAttempt = this.onLogAttempt.bind(this);
   }
 
   componentWillMount() {
-     Contacts.getAll((err, contacts) => {
-       if(err && err.type === 'permissionDenied'){
-         // x.x
-       } else {
-         let contactlist = contacts.filter(function(contact){
-           return contact.phoneNumbers.length > 0;
-         }).map(function(contact, index) {
-          //    let wordOneLetter = contact.givenName.charAt(0)
-          //    if(index !== 0) {
-          //      let wordTwoletter = contactlist[index - 1].givenName.charAt(0)
-          //    }
-          //    if(contact.givenName.charAt(0) ===)
-           return({
-             phoneNumber: contact.phoneNumbers[0].number,
-             givenName: contact.givenName,
-             press: false,
-             empty: 1,
-             index: index,
-             id: uuid.v4(),
-           });
-         })
+    Contacts.getAll((err, contacts) => {
+      if(err && err.type === 'permissionDenied'){
+        // x.x
+      } else {
+        let contactlist = contacts.filter(function(contact){
+          return contact.phoneNumbers.length > 0;
+        }).map(function(contact, index) {
+        //    let wordOneLetter = contact.givenName.charAt(0)
+        //    if(index !== 0) {
+        //      let wordTwoletter = contactlist[index - 1].givenName.charAt(0)
+        //    }
+        //    if(contact.givenName.charAt(0) ===)
+          return({
+            phoneNumber: contact.phoneNumbers[0].number,
+            givenName: contact.givenName,
+            press: false,
+            empty: 1,
+            index: index,
+            id: uuid.v4(),
+          });
+        })
         this.setState({contactList: contactlist})
-       }
-     })
-   }
+      }
+    })
+  }
+
+  // getNewRoute() {
+  //   if ()
+  // }
 
   async onValueChange(item, value) {
     try {
@@ -65,53 +74,52 @@ class VirgilApp extends Component {
 
   async onLogAttempt() {
     let TOKEN = await AsyncStorage.getItem(STORAGE_KEY);
-    let socket = io.connect('wss://virgil-is-the-restaurant-guide.herokuapp.com/');
+    socketConfig.query = `token=${TOKEN}`;
+    const socket = io.connect(Configs.host, socketConfig);
     socket.on('connect', () => {
-      socket
-        .emit('authenticate', {id_token: TOKEN})
+      socket.emit('authenticate', {token: TOKEN})
         .on('authenticated', () => {
           this.state.logStatus = true;
           this.setState(this.state);
         })
-        .on('unauthenticated', (message) => {
+        .on('unauthorized', (message) => {
           console.log(`Could not authenticate: ${JSON.stringify(message.data)}.`);
           Alert.alert(message.data.type);
         })
     });
   }
 
-  responseToJson(response) {
-    return null;
-  }
-
   userSignup() {
-    let value = this.refs.signupform.getValue();
-    Alert.alert(value.first_name)
+    let value = this.refs.form.getValue();
     if (value) {
-      fetch('https://virgil-is-the-restaurant-guide.herokuapp.com/users', {
+      fetch(`${Configs.host}/users`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          first_name: value.first,
-          last_name: value.last,
+          first_name: value.first_name,
+          last_name: value.last_name,
+          phone_number: value.phone_number,
           password: value.password,
           email: value.email,
         })
       })
-      .then((res) => res.json())
       .then((res) => {
-        this.onValueChange(STORAGE_KEY, res.id_token)})
-      .done();
+        let token = JSON.parse(res._bodyText).id_token;
+        this.props.onValueChange(STORAGE_KEY, token);
+      })
+      .done((res) => {
+        this.props.onLogAttempt();
+      });
     }
   }
 
   userLogin() {
     let value = this.refs.form.getValue();
     if (value) {
-      fetch('https://virgil-is-the-restaurant-guide.herokuapp.com/users/sessions/create', {
+      fetch(`${Configs.host}/users/sessions/create`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -122,12 +130,13 @@ class VirgilApp extends Component {
           password: value.password
         })
       })
-      .then((res) => res.json())
       .then((res) => {
-        console.log(res)
-        this.onValueChange(STORAGE_KEY, res.id_token)
+        let token = JSON.parse(res._bodyText).id_token;
+        this.props.onValueChange(STORAGE_KEY, token);
       })
-      .done();
+      .done((res) => {
+        this.props.onLogAttempt();
+      });
     }
   }
 
@@ -179,7 +188,7 @@ class VirgilApp extends Component {
     ];
     return (
       <Navigator
-        initialRoute={{id: 'SplashPage'}}
+        initialRoute={{id: this.state.routeName}}
         renderScene={this.renderScene.bind(this)}
       />
     );
@@ -197,6 +206,8 @@ class VirgilApp extends Component {
       return (
         <LoginPage
           userLogin={this.userLogin}
+          onValueChange={this.onValueChange}
+          onLogAttempt={this.onLogAttempt}
           navigator={navigator} />
       );
     }
@@ -204,12 +215,15 @@ class VirgilApp extends Component {
       return (
         <SignupPage
           userSignup={this.userSignup}
+          onValueChange={this.onValueChange}
+          onLogAttempt={this.onLogAttempt}
           navigator={navigator} />
       );
     }
     if (routeId === 'ChatPage') {
       return (
         <ChatPage
+          onLogAttempt={this.onLogAttempt}
           navigator={navigator} />
       );
     }
