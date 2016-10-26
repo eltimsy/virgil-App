@@ -17,7 +17,9 @@ class ChatPage extends Component {
 
   componentDidMount() {
     this.props.socket.on('message', (data) => {
-      this.props.inputMessages(data);
+      if (data.text !== "goToContacts") {
+        this.props.inputMessages(data);
+      }
       if (data.text === "goToContacts") {
         this.props.chatEnds();
         this.props.getNewRoute(() => {
