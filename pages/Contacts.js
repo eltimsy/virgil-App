@@ -34,6 +34,15 @@ export default class ContactsPage extends Component {
   handlePress() {
     let value = this.refs.form.getValue();
     this.props.addNumber(value);
+    // navigator.geolocation.getCurrentPosition(
+    //   (position) => {
+    //     console.log(position)
+    //     let myPosition = JSON.stringify(position);
+    //     this.setState({myPosition});
+    //   },
+    //   (error) => alert(JSON.stringify(error)),
+    //   {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
+    // );
   }
   handleSubmit() {
     let contacts = this.props.groupList

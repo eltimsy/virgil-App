@@ -1,6 +1,6 @@
 {
   "development": {
-    "host": "http://172.46.2.141:8080"
+    "host": "http://172.46.0.118:8080"
   },
   "test": {
     "host": "http://localhost:8080"
