@@ -26,7 +26,6 @@ class VirgilApp extends Component {
       grouplist: [],
       routeName: 'SplashPage',
       logStatus: false,
-      token: null,
       chatOn: true,
       socket: null,
     };
@@ -107,13 +106,13 @@ class VirgilApp extends Component {
     socket.on('connect', () => {
       socket.emit('authenticate', {token: TOKEN})
         .on('authenticated', () => {
-          this.setState({token: TOKEN, logStatus: true});
+          this.setState({logStatus: true});
           _done();
         })
         .on('unauthorized', (message) => {
           console.log(`Could not authenticate: ${JSON.stringify(message.data)}.`);
           Alert.alert(message.data.type);
-          this.setState({token: null, logStatus: false});
+          this.setState({logStatus: false});
           _done();
         })
     });
@@ -262,7 +261,6 @@ class VirgilApp extends Component {
         <ChatPage
           onLogAttempt={this.onLogAttempt}
           getNewRoute={this.getNewRoute}
-          userID={this.state.token}
           routeName={this.state.routeName}
           socket={this.state.socket}
           navigator={navigator}

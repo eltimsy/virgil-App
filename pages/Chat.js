@@ -30,7 +30,7 @@ class ChatPage extends Component {
 
   handleText() {
     if(this.state.text) {
-      let message = {text: this.state.text, type: 'client', userID: this.props.userID};
+      let message = {text: this.state.text, type: 'client'};
       this.state.messages.push(message);
       this.props.socket.emit('message', message)
       this.state.text = "";
