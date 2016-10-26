@@ -33,6 +33,7 @@ android/local.properties
 #
 node_modules/
 npm-debug.log
+config.json
 
 # BUCK
 buck-out/

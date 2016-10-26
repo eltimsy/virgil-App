@@ -9,7 +9,6 @@ class ChatPage extends Component {
     super(props);
     this.state = {
       text: "",
-      messages: [],
       keyboardstatus: false,
     };
     this.handleText = this.handleText.bind(this)
@@ -18,7 +17,7 @@ class ChatPage extends Component {
 
   componentDidMount() {
     this.props.socket.on('message', (data) => {
-      this.state.messages.push(data);
+      this.props.inputMessages(data);
       if(data.text === "Choose your contacts") {
         this.props.chatEnds();
         this.props.getNewRoute(() => {
@@ -31,7 +30,7 @@ class ChatPage extends Component {
   handleText() {
     if(this.state.text) {
       let message = {text: this.state.text, type: 'client'};
-      this.state.messages.push(message);
+      this.props.inputMessages(message);
       this.props.socket.emit('message', message)
       this.state.text = "";
       this.setState(this.state);
@@ -66,7 +65,7 @@ class ChatPage extends Component {
         </View>
         <ScrollView style={{flex:8, backgroundColor: 'white'}}>
           <View style={styles.container}>
-            {this.state.messages.map(function(element, index) {
+            {this.props.chatMessages.map(function(element, index) {
               return (<Text style={element.type === 'client'? styles.message : styles.botmessage} key = {index}>
                 {element.text}
               </Text>)

@@ -21,6 +21,16 @@ export default class ContactsPage extends Component {
     groupList: PropTypes.array.isRequired,
     clearGroup: PropTypes.func.isRequired,
   }
+  componentDidMount() {
+    this.props.socket.on('contacts', (data) => {
+      if(data === 'done') {
+        this.props.chatStarts();
+        this.props.getNewRoute(() => {
+          this.props.navigator.replace({id: this.props.routeName})
+        })
+      }
+    })
+  }
   handlePress() {
     let value = this.refs.form.getValue();
     this.props.addNumber(value);

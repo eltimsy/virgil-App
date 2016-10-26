@@ -25,6 +25,7 @@ class VirgilApp extends Component {
       contactList: [],
       groupList: [],
       routeName: 'SplashPage',
+      chatMessages: [],
       logStatus: false,
       chatOn: true,
       socket: null,
@@ -34,7 +35,9 @@ class VirgilApp extends Component {
     this.onLogAttempt = this.onLogAttempt.bind(this);
     this.getNewRoute = this.getNewRoute.bind(this);
     this.chatEnds = this.chatEnds.bind(this);
+    this.chatStarts = this.chatStarts.bind(this);
     this.clearGroup = this.clearGroup.bind(this);
+    this.inputMessages = this.inputMessages.bind(this);
   }
 
   componentWillMount() {
@@ -182,6 +185,9 @@ class VirgilApp extends Component {
   chatEnds() {
     this.setState({chatOn: false});
   }
+  chatStarts() {
+    this.setState({chatOn: true});
+  }
 
   addContacts(phoneNum, name, index) {
     let list = this.state.groupList;
@@ -212,7 +218,15 @@ class VirgilApp extends Component {
      }
    }
    clearGroup() {
+     this.state.contactList.forEach((contact) => {
+       return contact.press = false;
+     })
+     this.setState(this.state)
      this.setState({groupList: []})
+   }
+   inputMessages(message) {
+     this.state.chatMessages.push(message);
+     this.setState(this.state);
    }
 
   render() {
@@ -266,9 +280,11 @@ class VirgilApp extends Component {
       return (
         <ChatPage
           onLogAttempt = {this.onLogAttempt}
+          inputMessages = {this.inputMessages}
           getNewRoute = {this.getNewRoute}
           routeName = {this.state.routeName}
           socket = {this.state.socket}
+          chatMessages = {this.state.chatMessages}
           navigator = {navigator}
           chatEnds = {this.chatEnds} />
       );
@@ -279,7 +295,10 @@ class VirgilApp extends Component {
           navigator = {navigator}
           contactList = {this.state.contactList}
           addContacts = {this.addContacts}
+          getNewRoute = {this.getNewRoute}
+          routeName = {this.state.routeName}
           socket = {this.state.socket}
+          chatStarts = {this.chatStarts}
           groupList = {this.state.groupList}
           addNumber = {this.addNumber}
           clearGroup = {this.clearGroup}/>
