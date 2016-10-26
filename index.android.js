@@ -23,7 +23,7 @@ class VirgilApp extends Component {
     super(props);
     this.state = {
       contactList: [],
-      grouplist: [],
+      groupList: [],
       routeName: 'SplashPage',
       logStatus: false,
       chatOn: true,
@@ -34,6 +34,7 @@ class VirgilApp extends Component {
     this.onLogAttempt = this.onLogAttempt.bind(this);
     this.getNewRoute = this.getNewRoute.bind(this);
     this.chatEnds = this.chatEnds.bind(this);
+    this.clearGroup = this.clearGroup.bind(this);
   }
 
   componentWillMount() {
@@ -183,7 +184,7 @@ class VirgilApp extends Component {
   }
 
   addContacts(phoneNum, name, index) {
-    let list = this.state.grouplist;
+    let list = this.state.groupList;
     let newcontact = true;
     let duplicate = null;
     list.forEach(function(element, index) {
@@ -206,9 +207,12 @@ class VirgilApp extends Component {
    addNumber(value) {
      if(value) {
        value.name = "";
-       this.state.grouplist.push(value)
+       this.state.groupList.push(value)
        this.setState(this.state);
      }
+   }
+   clearGroup() {
+     this.setState({groupList: []})
    }
 
   render() {
@@ -231,20 +235,20 @@ class VirgilApp extends Component {
     if (routeId === 'SplashPage') {
       return (
         <SplashPage
-          getNewRoute={this.getNewRoute}
-          routeName={this.state.routeName}
-          navigator={navigator} />
+          getNewRoute = {this.getNewRoute}
+          routeName = {this.state.routeName}
+          navigator = {navigator} />
       );
     }
     if (routeId === 'LoginPage') {
       return (
         <LoginPage
-          userLogin={this.userLogin}
-          onValueChange={this.onValueChange}
-          onLogAttempt={this.onLogAttempt}
-          getNewRoute={this.getNewRoute}
-          routeName={this.state.routeName}
-          navigator={navigator} />
+          userLogin = {this.userLogin}
+          onValueChange = {this.onValueChange}
+          onLogAttempt = {this.onLogAttempt}
+          getNewRoute = {this.getNewRoute}
+          routeName = {this.state.routeName}
+          navigator = {navigator} />
       );
     }
     if (routeId === 'SignupPage') {
@@ -261,22 +265,24 @@ class VirgilApp extends Component {
     if (routeId === 'ChatPage') {
       return (
         <ChatPage
-          onLogAttempt={this.onLogAttempt}
-          getNewRoute={this.getNewRoute}
-          routeName={this.state.routeName}
-          socket={this.state.socket}
-          navigator={navigator}
-          chatEnds={this.chatEnds} />
+          onLogAttempt = {this.onLogAttempt}
+          getNewRoute = {this.getNewRoute}
+          routeName = {this.state.routeName}
+          socket = {this.state.socket}
+          navigator = {navigator}
+          chatEnds = {this.chatEnds} />
       );
     }
     if (routeId === 'ContactsPage') {
       return (
         <ContactsPage
-          navigator={navigator}
+          navigator = {navigator}
           contactList = {this.state.contactList}
           addContacts = {this.addContacts}
-          grouplist = {this.state.grouplist}
-          addNumber = {this.addNumber}/>
+          socket = {this.state.socket}
+          groupList = {this.state.groupList}
+          addNumber = {this.addNumber}
+          clearGroup = {this.clearGroup}/>
       );
     }
   }
