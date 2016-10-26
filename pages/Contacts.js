@@ -18,13 +18,30 @@ export default class ContactsPage extends Component {
   static propTypes = {
     contactList: PropTypes.array.isRequired,
     addContacts: PropTypes.func.isRequired,
-    grouplist: PropTypes.array.isRequired,
+    groupList: PropTypes.array.isRequired,
+    clearGroup: PropTypes.func.isRequired,
+  }
+  componentDidMount() {
+    this.props.socket.on('contacts', (data) => {
+      if(data === 'done') {
+        this.props.chatStarts();
+        this.props.getNewRoute(() => {
+          this.props.navigator.replace({id: this.props.routeName})
+        })
+      }
+    })
   }
   handlePress() {
     let value = this.refs.form.getValue();
     this.props.addNumber(value);
   }
-
+  handleSubmit() {
+    let contacts = this.props.groupList
+    if(contacts.length > 0) {
+      this.props.socket.emit('contacts', contacts);
+      this.props.clearGroup();
+    }
+  }
   render() {
     let addcontacts = this.props.addContacts
     return (
@@ -44,11 +61,14 @@ export default class ContactsPage extends Component {
             </View>
 
           <View style={styles.group}>
-            {this.props.grouplist.map(function(element,index) {
+            {this.props.groupList.map(function(element,index) {
               return (<Text key = {index}>
                 {element.name? element.name + "" + element.number: element.number}
               </Text>)
             })}
+            <TouchableHighlight onPress={this.handleSubmit.bind(this)} underlayColor='red'>
+              <Text>Submit</Text>
+            </TouchableHighlight>
           </View>
 
           <View style={styles.contacts}>
