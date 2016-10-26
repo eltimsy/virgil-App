@@ -19,7 +19,7 @@ class ChatPage extends Component {
   componentDidMount() {
     this.props.socket.on('message', (data) => {
       this.state.messages.push(data);
-      if(data.text === "Choose your contacts") {
+      if(data.text === "goToContacts") {
         this.props.chatEnds();
         this.props.getNewRoute(() => {
           this.props.navigator.replace({id: this.props.routeName})
@@ -30,7 +30,7 @@ class ChatPage extends Component {
 
   handleText() {
     if(this.state.text) {
-      let message = {text: this.state.text, type: 'client'};
+      let message = {text: this.state.text, type: 'client', userID: this.props.userID};
       this.state.messages.push(message);
       this.props.socket.emit('message', message)
       this.state.text = "";
