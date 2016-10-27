@@ -40,10 +40,18 @@ class VirgilApp extends Component {
     this.inputMessages = this.inputMessages.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
+
+    const TOKEN = this.retrieveToken();
+    if (TOKEN) {
+      this.onLogAttempt(() => {
+        this.setState({routeName: 'ChatPage'})
+      })
+    }
+
     Contacts.getAll((err, contacts) => {
       if(err && err.type === 'permissionDenied'){
-        // x.x
+        Alert.alert('Contacts', 'Could not retrieve contacts.')
       } else {
         let contactlist = contacts.filter(function(contact){
           return contact.phoneNumbers.length > 0;
@@ -92,6 +100,10 @@ class VirgilApp extends Component {
     _done();
   }
 
+  async retrieveToken() {
+    return await AsyncStorage.getItem(STORAGE_KEY);
+  }
+
   async onValueChange(item, value, _done) {
     try {
       await AsyncStorage.setItem(item, value);
@@ -103,7 +115,7 @@ class VirgilApp extends Component {
   }
 
   async onLogAttempt(_done) {
-    let TOKEN = await AsyncStorage.getItem(STORAGE_KEY);
+    const TOKEN = await this.retrieveToken();
     socketConfig.query = `token=${TOKEN}`;
     const socket = io.connect(Configs.host, socketConfig);
     this.setState({socket: socket});
