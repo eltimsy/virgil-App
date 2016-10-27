@@ -86,6 +86,12 @@ class VirgilApp extends Component {
     })
   }
 
+  componentWillUnmount() {
+    if (socket) {
+      socket.emit('disconnect');
+    }
+  }
+
   getNewRoute(_done) {
     if (this.state.logStatus === true) {
       if (this.state.chatOn === true) {
