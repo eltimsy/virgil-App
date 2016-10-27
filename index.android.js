@@ -26,8 +26,8 @@ class VirgilApp extends Component {
       groupList: [],
       routeName: 'SplashPage',
       chatMessages: [],
-      logStatus: false,
-      chatOn: true,
+      logStatus: true,
+      chatOn: false,
       socket: null,
     };
     this.addContacts = this.addContacts.bind(this);

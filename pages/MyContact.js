@@ -31,21 +31,19 @@ export default class MyContacts extends Component {
 
 const styles = StyleSheet.create({
   letter: {
-    backgroundColor: '#e3e6e0',
+    backgroundColor: '#BFD7B5',
+    color: '#3B28CC',
+    borderColor: '#3B28CC',
   },
   button: {
     color: 'black',
-    borderColor: '#e3e6e0',
-    borderBottomWidth: 2,
     justifyContent: 'center',
     fontSize: 20,
     padding: 5,
   },
   buttonPress: {
     color: 'black',
-    backgroundColor: '#96a2e8',
-    borderColor: '#e3e6e0',
-    borderBottomWidth: 2,
+    backgroundColor: '#87BFFF',
     justifyContent: 'center',
     fontSize: 20,
     padding: 5,

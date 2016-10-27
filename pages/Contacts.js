@@ -45,7 +45,7 @@ export default class ContactsPage extends Component {
   render() {
     let addcontacts = this.props.addContacts
     return (
-      <ScrollView>
+      <ScrollView style={{backgroundColor: '#BFD7B5'}}>
         <View  style={styles.container}>
             <View style={styles.row}>
               <Form
@@ -60,15 +60,17 @@ export default class ContactsPage extends Component {
               </TouchableHighlight>
             </View>
 
-          <View style={styles.group}>
+          <View style={this.props.groupList.length > 0? styles.group: styles.row}>
             {this.props.groupList.map(function(element,index) {
               return (<Text key = {index}>
                 {element.name? element.name + "" + element.number: element.number}
               </Text>)
             })}
-            <TouchableHighlight onPress={this.handleSubmit.bind(this)} underlayColor='red'>
-              <Text>Submit</Text>
-            </TouchableHighlight>
+            <View style={{alignItems: 'center', marginTop: 5}}>
+              <TouchableHighlight style={this.props.groupList.length > 0? styles.submit: styles.row} onPress={this.handleSubmit.bind(this)}>
+                <Text style={this.props.groupList.length > 0? styles.textcolor: styles.hide}>Submit</Text>
+              </TouchableHighlight>
+            </View>
           </View>
 
           <View style={styles.contacts}>
@@ -90,7 +92,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 10,
     padding: 20,
-    backgroundColor: '#e3e6e0',
+    backgroundColor: '#BFD7B5',
+  },
+  submit: {
+    backgroundColor: '#395B50',
+    width: 300,
+    padding: 5,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  row: {
+    marginTop: 5,
+  },
+  hide: {
+    color: '#BFD7B5',
+  },
+  textcolor: {
+    color: 'white',
   },
   buttonText: {
     fontSize: 18,
@@ -99,8 +117,8 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
+    backgroundColor: '#395B50',
+    borderColor: '#395B50',
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 10,
@@ -115,7 +133,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   contacts: {
-    marginTop: 5,
+    marginTop: 15,
     flex: 2,
     backgroundColor: 'white',
   },
