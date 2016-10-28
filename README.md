@@ -1,5 +1,6 @@
 #VIRGIL Client
 VIRGIL comes in two parts this is the client side using react-native to be used with android phones.
+Link to Server: https://github.com/micahsmith/virgil
 
 ##VIRGIL is the Restaurant Guide In Limbo
 A mobile app created to provide a convenient way to decide on restaurants with friends.  
