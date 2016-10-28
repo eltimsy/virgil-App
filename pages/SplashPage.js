@@ -15,9 +15,6 @@ class SplashPage extends Component {
   }
 
   render() {
-    let pic = {
-      uri: '../resources/pictures/kebabpic.jpg'
-    }
     return (
       <View style={styles.container}>
         <Image source={require('../resources/pictures/kebabpic.jpg')} style={styles.backgroundImage}>
@@ -46,8 +43,8 @@ const styles = StyleSheet.create({
     fontFamily: 'serif',
     fontStyle: 'italic',
     padding: 5,
-    backgroundColor: '#246dd5',
-    borderRadius: 5,
+    backgroundColor: '#395B50',
+    borderRadius: 50,
     color: 'white',
     fontSize: 32,
     textAlign: 'center',
@@ -59,7 +56,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     textAlign: 'center',
-    backgroundColor: '#09b983',
+    backgroundColor: '#395B50',
     opacity: 0.75,
   },
 })
