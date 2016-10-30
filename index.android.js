@@ -154,18 +154,18 @@ class VirgilApp extends Component {
         })
       })
       .then((res) => {
-        if (res._bodyText.id_token) {
-          let token = res._bodyText.id_token;
+        if (JSON.parse(res._bodyText).id_token) {
+          let token = JSON.parse(res._bodyText).id_token;
           this.onValueChange(STORAGE_KEY, token, () => {
             this.configureSocket(_done);
           });
         } else {
-          throw new Error(res._bodyText)
+          throw new Error(JSON.parse(res._bodyText).error)
         }
       })
       .catch((err) => {
         Alert.alert(
-          'Failed to Sign Up:',
+          'Sign Up Failure:',
           err.message);
       })
       .done()
@@ -186,19 +186,19 @@ class VirgilApp extends Component {
         })
       })
       .then((res) => {
-        console.log(res._bodyText.id_token)
-        if (res._bodyText.id_token) {
-          let token = res._bodyText.id_token;
+        if (JSON.parse(res._bodyText).id_token) {
+          let token = JSON.parse(res._bodyText).id_token;
           this.onValueChange(STORAGE_KEY, token, () => {
             this.configureSocket(_done);
           });
         } else {
-          throw new Error(res._bodyText)
+          throw new Error(JSON.parse(res._bodyText).error)
         }
       })
       .catch((err) => {
+        console.log(err)
         Alert.alert(
-          'Login Attempt Failed:',
+          'Login Failure:',
           err.message);
       })
       .done()

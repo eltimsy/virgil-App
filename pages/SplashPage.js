@@ -10,7 +10,7 @@ class SplashPage extends Component {
     this.props.configureSocket(() => {
       setTimeout(() => {
         this.props.getNewRoute(() => {
-          navigator.replace({id: 'LoginPage'});
+          navigator.replace({id: this.props.routeName});
         });
       }, 500);
     })
