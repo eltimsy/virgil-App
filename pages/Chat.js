@@ -16,14 +16,11 @@ class ChatPage extends Component {
   }
 
   componentDidMount() {
-    this.props.socket.on('message', (data) => {
-      if (data.text !== "goToContacts") {
-        this.props.inputMessages(data);
-      }
-      if (data.text === "goToContacts") {
+    this.props.socket.on('contacts', (data) => {
+      if (data === 'gotocontacts') {
         this.props.chatEnds();
         this.props.getNewRoute(() => {
-          this.props.navigator.replace({id: this.props.routeName})
+          this.props.navigator.replace({id: this.props.routeName});
         })
       }
     })

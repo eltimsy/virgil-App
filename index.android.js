@@ -30,9 +30,9 @@ class VirgilApp extends Component {
       chatOn: true,
       socket: null,
     };
+    this.configureSocket = this.configureSocket.bind(this);
     this.addContacts = this.addContacts.bind(this);
     this.addNumber = this.addNumber.bind(this);
-    this.onLogAttempt = this.onLogAttempt.bind(this);
     this.getNewRoute = this.getNewRoute.bind(this);
     this.chatEnds = this.chatEnds.bind(this);
     this.chatStarts = this.chatStarts.bind(this);
@@ -40,14 +40,33 @@ class VirgilApp extends Component {
     this.inputMessages = this.inputMessages.bind(this);
   }
 
-  componentDidMount() {
-
-    const TOKEN = this.retrieveToken();
+  async configureSocket(_done) {
+    this.state.socket = null;
+    const TOKEN = await AsyncStorage.getItem(STORAGE_KEY);
     if (TOKEN) {
-      this.onLogAttempt(() => {
-        this.setState({routeName: 'ChatPage'})
-      })
+      socketConfig.query = `token=${TOKEN}`;
     }
+    const socket = io.connect(Configs.host, socketConfig);
+    socket.on('connect', () => {
+      socket.emit('authenticate', {token: TOKEN})
+        .on('authenticated', () => {
+          this.setState({logStatus: true});
+          console.log('logstatus set to true')
+        })
+        .on('unauthorized', (message) => {
+          console.log(`Could not authenticate: ${JSON.stringify(message.data)}.`);
+          Alert.alert(message.data.type);
+          this.setState({logStatus: false});
+        })
+    })
+    socket.on('message', (data) => {
+      this.inputMessages(data);
+    });
+    this.setState({socket: socket});
+    _done();
+  }
+
+  componentDidMount() {
 
     Contacts.getAll((err, contacts) => {
       if(err && err.type === 'permissionDenied'){
@@ -87,27 +106,25 @@ class VirgilApp extends Component {
   }
 
   componentWillUnmount() {
-    if (socket) {
-      socket.emit('disconnect');
+    if (this.state.socket) {
+      this.state.socket.emit('disconnect');
+      this.setState({socket: null});
     }
   }
 
   getNewRoute(_done) {
+    console.log(`logstatus is ${this.state.logStatus}`)
     if (this.state.logStatus === true) {
-      if (this.state.chatOn === true) {
+      if (this.state.chatOn) {
         this.state.routeName = 'ChatPage';
       } else {
         this.state.routeName = 'ContactsPage';
       }
     } else {
       this.state.routeName = 'LoginPage';
-      }
+    }
     this.setState(this.state);
     _done();
-  }
-
-  async retrieveToken() {
-    return await AsyncStorage.getItem(STORAGE_KEY);
   }
 
   async onValueChange(item, value, _done) {
@@ -118,26 +135,6 @@ class VirgilApp extends Component {
       console.log(`AsyncStorage error: ${err.message}`);
       _done();
     }
-  }
-
-  async onLogAttempt(_done) {
-    const TOKEN = await this.retrieveToken();
-    socketConfig.query = `token=${TOKEN}`;
-    const socket = io.connect(Configs.host, socketConfig);
-    this.setState({socket: socket});
-    socket.on('connect', () => {
-      socket.emit('authenticate', {token: TOKEN})
-        .on('authenticated', () => {
-          this.setState({logStatus: true});
-          _done();
-        })
-        .on('unauthorized', (message) => {
-          console.log(`Could not authenticate: ${JSON.stringify(message.data)}.`);
-          Alert.alert(message.data.type);
-          this.setState({logStatus: false});
-          _done();
-        })
-    });
   }
 
   userSignup(value, _done) {
@@ -159,7 +156,7 @@ class VirgilApp extends Component {
       .then((res) => {
         let token = JSON.parse(res._bodyText).id_token;
         this.onValueChange(STORAGE_KEY, token, () => {
-          this.onLogAttempt(_done);
+          this.configureSocket(_done);
         });
       })
       .done()
@@ -182,7 +179,7 @@ class VirgilApp extends Component {
       .then((res) => {
         let token = JSON.parse(res._bodyText).id_token;
         this.onValueChange(STORAGE_KEY, token, () => {
-          this.onLogAttempt(_done);
+          this.configureSocket(_done);
         });
       })
       .done()
@@ -199,10 +196,13 @@ class VirgilApp extends Component {
   }
 
   chatEnds() {
-    this.setState({chatOn: false});
+    this.state.chatOn = false;
+    this.setState(this.state);
   }
+
   chatStarts() {
-    this.setState({chatOn: true});
+    this.state.chatOn = true;
+    this.setState(this.state);
   }
 
   addContacts(phoneNum, name, index) {
@@ -226,6 +226,7 @@ class VirgilApp extends Component {
        this.setState(this.state);
      }
    }
+
    addNumber(value) {
      if(value) {
        value.name = "";
@@ -233,6 +234,7 @@ class VirgilApp extends Component {
        this.setState(this.state);
      }
    }
+
    clearGroup() {
      this.state.contactList.forEach((contact) => {
        return contact.press = false;
@@ -240,9 +242,12 @@ class VirgilApp extends Component {
      this.setState(this.state)
      this.setState({groupList: []})
    }
+
    inputMessages(message) {
-     this.state.chatMessages.push(message);
-     this.setState(this.state);
+     if (message.text !== 'gotocontacts') {
+       this.state.chatMessages.push(message);
+       this.setState(this.state);
+     }
    }
 
   render() {
@@ -265,6 +270,7 @@ class VirgilApp extends Component {
     if (routeId === 'SplashPage') {
       return (
         <SplashPage
+          configureSocket = {this.configureSocket}
           getNewRoute = {this.getNewRoute}
           routeName = {this.state.routeName}
           navigator = {navigator} />
@@ -274,9 +280,9 @@ class VirgilApp extends Component {
       return (
         <LoginPage
           userLogin = {this.userLogin}
-          onValueChange = {this.onValueChange}
-          onLogAttempt = {this.onLogAttempt}
           getNewRoute = {this.getNewRoute}
+          configureSocket = {this.configureSocket}
+          onValueChange = {this.onValueChange}
           routeName = {this.state.routeName}
           navigator = {navigator} />
       );
@@ -286,8 +292,8 @@ class VirgilApp extends Component {
         <SignupPage
           userSignup={this.userSignup}
           onValueChange={this.onValueChange}
-          onLogAttempt={this.onLogAttempt}
           getNewRoute={this.getNewRoute}
+          configureSocket={this.configureSocket}
           routeName={this.state.routeName}
           navigator={navigator} />
       );
@@ -295,20 +301,19 @@ class VirgilApp extends Component {
     if (routeId === 'ChatPage') {
       return (
         <ChatPage
-          onLogAttempt = {this.onLogAttempt}
           inputMessages = {this.inputMessages}
           getNewRoute = {this.getNewRoute}
           routeName = {this.state.routeName}
           socket = {this.state.socket}
+          chatEnds = {this.chatEnds}
           chatMessages = {this.state.chatMessages}
-          navigator = {navigator}
-          chatEnds = {this.chatEnds} />
+          chatOn = {this.state.chatOn}
+          navigator = {navigator} />
       );
     }
     if (routeId === 'ContactsPage') {
       return (
         <ContactsPage
-          navigator = {navigator}
           contactList = {this.state.contactList}
           addContacts = {this.addContacts}
           getNewRoute = {this.getNewRoute}
@@ -317,7 +322,8 @@ class VirgilApp extends Component {
           chatStarts = {this.chatStarts}
           groupList = {this.state.groupList}
           addNumber = {this.addNumber}
-          clearGroup = {this.clearGroup}/>
+          clearGroup = {this.clearGroup}
+          navigator = {navigator} />
       );
     }
   }

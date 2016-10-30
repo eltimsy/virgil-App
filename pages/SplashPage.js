@@ -7,11 +7,13 @@ class SplashPage extends Component {
 
   componentDidMount() {
     let navigator = this.props.navigator;
-    this.props.getNewRoute(() => {
+    this.props.configureSocket(() => {
       setTimeout(() => {
-        navigator.replace({id: this.props.routeName});
-      }, 300);
-    });
+        this.props.getNewRoute(() => {
+          navigator.replace({id: this.props.routeName});
+        });
+      }, 500);
+    })
   }
 
   render() {
