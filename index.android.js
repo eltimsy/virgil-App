@@ -51,9 +51,7 @@ class VirgilApp extends Component {
       socket.emit('authenticate', {token: TOKEN})
         .on('authenticated', () => {
           this.setState({logStatus: true});
-          socket.on('message', (data) => {
-            this.inputMessages(data);
-          });
+          console.log('logstatus set to true')
         })
         .on('unauthorized', (message) => {
           console.log(`Could not authenticate: ${JSON.stringify(message.data)}.`);
@@ -61,17 +59,14 @@ class VirgilApp extends Component {
           this.setState({logStatus: false});
         })
     })
+    socket.on('message', (data) => {
+      this.inputMessages(data);
+    });
     this.setState({socket: socket});
     _done();
   }
 
   componentDidMount() {
-
-    this.configureSocket(() => {
-      this.getNewRoute(() => {
-        console.log(`${this.state.routeName}`);
-      })
-    });
 
     Contacts.getAll((err, contacts) => {
       if(err && err.type === 'permissionDenied'){
@@ -118,6 +113,7 @@ class VirgilApp extends Component {
   }
 
   getNewRoute(_done) {
+    console.log(`logstatus is ${this.state.logStatus}`)
     if (this.state.logStatus === true) {
       if (this.state.chatOn) {
         this.state.routeName = 'ChatPage';
@@ -181,7 +177,6 @@ class VirgilApp extends Component {
         })
       })
       .then((res) => {
-        console.log(res)
         let token = JSON.parse(res._bodyText).id_token;
         this.onValueChange(STORAGE_KEY, token, () => {
           this.configureSocket(_done);
@@ -249,7 +244,6 @@ class VirgilApp extends Component {
    }
 
    inputMessages(message) {
-     console.log(message)
      if (message.text !== 'gotocontacts') {
        this.state.chatMessages.push(message);
        this.setState(this.state);
@@ -276,6 +270,7 @@ class VirgilApp extends Component {
     if (routeId === 'SplashPage') {
       return (
         <SplashPage
+          configureSocket = {this.configureSocket}
           getNewRoute = {this.getNewRoute}
           routeName = {this.state.routeName}
           navigator = {navigator} />
@@ -310,6 +305,7 @@ class VirgilApp extends Component {
           getNewRoute = {this.getNewRoute}
           routeName = {this.state.routeName}
           socket = {this.state.socket}
+          chatEnds = {this.chatEnds}
           chatMessages = {this.state.chatMessages}
           chatOn = {this.state.chatOn}
           navigator = {navigator} />
