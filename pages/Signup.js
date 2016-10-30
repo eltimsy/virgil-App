@@ -69,6 +69,10 @@ class SignupPage extends Component {
     });
   }
 
+  sendToLogin() {
+    this.props.navigator.replace({id: 'LoginPage'});
+  }
+
   render() {
     return (
       <ScrollView style={{backgroundColor: '#A3C4BC'}}>
@@ -84,8 +88,13 @@ class SignupPage extends Component {
             />
           </View>
           <View style={styles.row}>
-            <TouchableHighlight style={styles.button} onPress={this.handleSignup.bind(this)} underlayColor='#99d9f4'>
+            <TouchableHighlight style={styles.button2} onPress={this.handleSignup.bind(this)} underlayColor='#99d9f4'>
               <Text style={styles.buttonText}>Sign Up</Text>
+            </TouchableHighlight>
+          </View>
+          <View style={styles.row}>
+            <TouchableHighlight style={styles.button} onPress={this.sendToLogin.bind(this)} underlayColor='#99d9f4'>
+              <Text style={styles.buttonText}>Back to Login</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -116,14 +125,23 @@ const styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center',
   },
+  button2: {
+    height: 36,
+    backgroundColor: '#395B50',
+    borderColor: '#395B50',
+    borderWidth: 1,
+    borderRadius: 8,
+    marginTop: 5,
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+  },
   button: {
     height: 36,
     backgroundColor: '#395B50',
     borderColor: '#395B50',
     borderWidth: 1,
     borderRadius: 8,
-    marginBottom: 10,
-    marginTop: 5,
+    marginTop: 10,
     alignSelf: 'stretch',
     justifyContent: 'center',
   },
