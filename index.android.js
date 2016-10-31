@@ -205,12 +205,14 @@ class VirgilApp extends Component {
     }
   }
 
-  async userLogout() {
+  async userLogout(_done) {
     try {
       await AsyncStorage.removeItem(STORAGE_KEY);
       Alert.alert("Logout succeeded.")
+      _done();
     } catch (err) {
       console.log(`AsyncStorage error: ${err}.`)
+      _done();
     }
   }
 
@@ -327,6 +329,7 @@ class VirgilApp extends Component {
           chatEnds = {this.chatEnds}
           chatMessages = {this.state.chatMessages}
           chatOn = {this.state.chatOn}
+          userLogout = {this.userLogout}
           navigator = {navigator} />
       );
     }

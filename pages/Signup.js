@@ -83,7 +83,7 @@ class SignupPage extends Component {
       <ScrollView style={{backgroundColor: '#A3C4BC'}}>
         <View style={styles.container}>
           <View style={styles.row}>
-            <Text style={styles.title}>Create New Account:</Text>
+            <Text style={styles.title}>Create New Account</Text>
           </View>
           <View style={styles.row}>
             <Form

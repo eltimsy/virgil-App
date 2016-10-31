@@ -38,6 +38,14 @@ class ChatPage extends Component {
     }
   }
 
+  handleLogout() {
+    this.props.userLogout(() => {
+      this.props.getNewRoute(() => {
+        this.props.navigator.replace({id: 'LoginPage'});
+      })
+    });
+  }
+
   handlekeystate(value) {
     if(value === true) {
       this.setState({
@@ -61,10 +69,12 @@ class ChatPage extends Component {
   renderScene(route, navigator) {
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
-
         <KeyboardSpacer handlekey = {this.handlekeystate}/>
-        <View style={styles.chatbot}>
-          <Text style={this.state.keyboardstatus? styles.botsmall : styles.bottitle}>Virgil</Text>
+        <View style={this.state.keyboardstatus ? styles.chatbotSmall : styles.chatbot}>
+          <Text style={this.state.keyboardstatus ? styles.botsmall : styles.bottitle}>Virgil</Text>
+          <TouchableHighlight style={this.state.keyboardstatus ? styles.buttonSmall : styles.button} onPress={this.handleLogout.bind(this)} underlayColor={'#99d9f4'}>
+              <Text style={this.state.keyboardstatus ? styles.buttonTextSmall : styles.buttonText}>Logout</Text>
+          </TouchableHighlight>
         </View>
         <AutoScroll style={{flex:8, backgroundColor: 'white'}}>
           <View style={styles.container}>
@@ -94,6 +104,16 @@ const styles = StyleSheet.create({
   chatbot: {
     flex: 1,
     backgroundColor: '#395B50',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+  },
+  chatbotSmall: {
+    flex: 1,
+    backgroundColor: '#395B50',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
   },
   message:{
     borderWidth: 1,
@@ -150,6 +170,33 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#ffffff',
   },
+  buttonText: {
+    fontSize: 16,
+    textAlign: 'center',
+    paddingLeft: 5,
+    paddingRight: 5,
+    color: 'white',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    fontFamily: 'serif',
+    fontStyle: 'italic',
+  },
+  buttonTextSmall: {
+    fontSize: 0,
+  },
+  button: {
+    height: 32,
+    backgroundColor: '#395B50',
+    borderColor: '#ffffff',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    marginBottom: 6,
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+  },
+  buttonSmall: {
+    height: 0,
+  }
 });
 
 module.exports = ChatPage;
