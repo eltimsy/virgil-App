@@ -1,72 +1,77 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Text, Navigator, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View, Text, Navigator, TouchableHighlight, TouchableOpacity } from 'react-native';
 import t from 'tcomb-form-native';
 
-const Email = t.refinement(t.String, (str) => {
-  const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return emailRegEx.test(str);
-});
-
-const PhoneNumber = t.refinement(t.Number, (num) => {
-  const digits = num.toString().length
-  return digits >= 10 && digits <= 15;
-});
-
-const Password = t.refinement(t.String, (str) => {
-  return str.length >= 5;
-})
-
 const Form = t.form.Form;
+
 const UserForm = t.struct({
-  password: Password,
-  confirm_password: Password,
   first_name: t.String,
   last_name: t.String,
-  email: Email,
-  phone_number: PhoneNumber,
+  email: t.String,
+  phone_number: t.Number,
+  password: t.String,
+  confirm_password: t.String,
 });
-
-function samePassword(object) {
-  return object.password === object.confirm_password;
-}
-
-UserForm.getValidationErrorMessage = (value) => {
-  if (!samePassword(value)) {
-    return 'Passwords do not match'
-  }
-}
 
 const options = {
   auto: 'placeholders',
-  underlineColorAndroid: 'transparent',
   fields: {
-    email: {
-      error: 'Invalid email',
-    },
     password: {
-      type: 'password',
-      error: 'Invalid password',
+      password: true,
+      secureTextEntry: true,
     },
     confirm_password: {
-      type: 'password',
-      error: 'Invalid password',
+      password: true,
+      secureTextEntry: true,
     },
   },
 };
 
 class SignupPage extends Component {
 
+  constructor(props) {
+    super(props);
+    this.handleValidation = this.handleValidation.bind(this)
+  }
+
+  handleValidation(value, _done) {
+    const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const digits = value.phone_number.toString().length;
+    let pass = false;
+    if (emailRegEx.test(value.email)) {
+      if (digits >= 10 && digits <= 15) {
+        if (value.password === value.confirm_password) {
+          pass = true;
+        } else {
+          Alert.alert('Signup Validation Failure:', 'Password and password confirmation fields do not match. Please try again.')
+        }
+      } else {
+        Alert.alert('Signup Validation Failure:', 'Please enter a valid phone number between 10 and 15 digits.')
+      }
+    } else {
+      Alert.alert('Signup Validation Failure:', 'Please enter a valid email address.')
+    }
+    _done(pass);
+  }
+
   handleSignup() {
     let navigator = this.props.navigator;
     let value = this.refs.form.getValue();
-    this.props.userSignup(value, () => {
-      this.props.getNewRoute(() => {
-        console.log(this.props.routeName)
-        navigator.replace({id: this.props.routeName});
+    if (value) {
+      this.handleValidation(value, (pass) => {
+        if (pass) {
+          this.props.userSignup(value, () => {
+            this.props.getNewRoute(() => {
+              navigator.replace({id: this.props.routeName});
+            });
+          });
+        }
       });
-    });
+    } else {
+      Alert.alert('Signup Validation Failure:', 'Please ensure all fields are filled out.');
+    }
   }
 
   sendToLogin() {

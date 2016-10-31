@@ -6,12 +6,17 @@ import t from 'tcomb-form-native';
 
 const Form = t.form.Form;
 const LoginForm = t.struct({
-  email: t.String,
-  password: t.String,
+  email: t.Str,
+  password: t.Str,
 });
 const options = {
   auto: 'placeholders',
-  underlineColorAndroid: 'transparent',
+  fields: {
+    password: {
+      password: true,
+      secureTextEntry: true,
+    },
+  },
 };
 
 class LoginPage extends Component {
