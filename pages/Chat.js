@@ -60,7 +60,7 @@ class ChatPage extends Component {
 
         <KeyboardSpacer handlekey = {this.handlekeystate}/>
         <View style={styles.chatbot}>
-          <Text style={this.state.keyboardstatus? styles.botsmall : styles.bottitle}>ChatBot</Text>
+          <Text style={this.state.keyboardstatus? styles.botsmall : styles.bottitle}>Virgil</Text>
         </View>
         <ScrollView style={{flex:8, backgroundColor: 'white'}}>
           <View style={styles.container}>
@@ -89,7 +89,7 @@ class ChatPage extends Component {
 const styles = StyleSheet.create({
   chatbot: {
     flex: 1,
-    backgroundColor: 'gray',
+    backgroundColor: '#395B50',
   },
   message:{
     borderWidth: 1,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   textinputbox: {
     paddingLeft: 10,
     height: 40,
-    backgroundColor: '#e4e4e4',
+    backgroundColor: '#A3C4BC',
   },
   messageboxsmall:{
     flex: 1,
@@ -129,11 +129,17 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center',
     paddingTop: 10,
+    color: 'white',
+    fontFamily: 'serif',
+    fontStyle: 'italic',
   },
   botsmall: {
     fontSize: 15,
     textAlign: 'center',
     paddingTop: 5,
+    color: 'white',
+    fontFamily: 'serif',
+    fontStyle: 'italic',
   },
   container: {
     justifyContent: 'center',
