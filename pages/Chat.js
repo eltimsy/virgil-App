@@ -2,9 +2,11 @@
 
 import React, { Component } from 'react';
 import { ScrollView, StyleSheet, View,TextInput, Text, Navigator, TouchableHighlight } from 'react-native';
+import AutoScroll from 'react-native-auto-scroll';
 import KeyboardSpacer from './KeyboardSpacer';
 
 class ChatPage extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -35,6 +37,7 @@ class ChatPage extends Component {
       this.setState(this.state);
     }
   }
+
   handlekeystate(value) {
     if(value === true) {
       this.setState({
@@ -46,6 +49,7 @@ class ChatPage extends Component {
       })
     }
   }
+
   render() {
     return (
       <Navigator
@@ -62,7 +66,7 @@ class ChatPage extends Component {
         <View style={styles.chatbot}>
           <Text style={this.state.keyboardstatus? styles.botsmall : styles.bottitle}>Virgil</Text>
         </View>
-        <ScrollView style={{flex:8, backgroundColor: 'white'}}>
+        <AutoScroll style={{flex:8, backgroundColor: 'white'}}>
           <View style={styles.container}>
             {this.props.chatMessages.map(function(element, index) {
               return (<Text style={element.type === 'client'? styles.message : styles.botmessage} key = {index}>
@@ -70,7 +74,7 @@ class ChatPage extends Component {
               </Text>)
             })}
           </View>
-        </ScrollView>
+        </AutoScroll>
         <View style={this.state.keyboardstatus? styles.messageboxsmall : styles.messagebox}>
           <TextInput
             underlineColorAndroid={'transparent'}
