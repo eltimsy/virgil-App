@@ -38,6 +38,7 @@ class VirgilApp extends Component {
     this.chatStarts = this.chatStarts.bind(this);
     this.clearGroup = this.clearGroup.bind(this);
     this.inputMessages = this.inputMessages.bind(this);
+    this.userLogout = this.userLogout.bind(this);
   }
 
   async configureSocket(_done) {
@@ -205,10 +206,12 @@ class VirgilApp extends Component {
   async userLogout(_done) {
     try {
       await AsyncStorage.removeItem(STORAGE_KEY);
-      Alert.alert("Logout succeeded.")
+      this.state.socket.emit('disconnect');
+      this.setState({socket: null});
       _done();
     } catch (err) {
-      console.log(`AsyncStorage error: ${err}.`)
+      Alert.alert('Logout Failed:', err.message);
+      console.log(`AsyncStorage error: ${err}.`);
       _done();
     }
   }
