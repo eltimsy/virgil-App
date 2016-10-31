@@ -27,12 +27,13 @@ class LoginPage extends Component {
   handleLogin() {
     let navigator = this.props.navigator;
     let value = this.refs.form.getValue();
-    this.props.userLogin(value, () => {
-      this.props.getNewRoute(() => {
-        console.log(this.props.routeName)
-        navigator.replace({id: this.props.routeName});
+    if (value) {
+      this.props.userLogin(value, () => {
+        this.props.getNewRoute(() => {
+          navigator.replace({id: this.props.routeName});
+        });
       });
-    });
+    }
   }
 
   sendToSignUp() {

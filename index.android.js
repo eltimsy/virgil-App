@@ -51,11 +51,9 @@ class VirgilApp extends Component {
       socket.emit('authenticate', {token: TOKEN})
         .on('authenticated', () => {
           this.setState({logStatus: true});
-          console.log('logstatus set to true')
         })
         .on('unauthorized', (message) => {
           console.log(`Could not authenticate: ${JSON.stringify(message.data)}.`);
-          Alert.alert(message.data.type);
           this.setState({logStatus: false});
         })
     })
@@ -113,7 +111,6 @@ class VirgilApp extends Component {
   }
 
   getNewRoute(_done) {
-    console.log(`logstatus is ${this.state.logStatus}`)
     if (this.state.logStatus === true) {
       if (this.state.chatOn) {
         this.state.routeName = 'ChatPage';
