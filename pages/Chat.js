@@ -21,11 +21,13 @@ class ChatPage extends Component {
   componentDidMount() {
     this.props.socket.on('contacts', (data) => {
       if (data === 'gotocontacts') {
-        this.props.chatEnds();
-        this.props.getNewRoute(() => {
-          this.props.navigator.replace({id: this.props.routeName});
-        })
+        this.props.chatEnds(false);
+      } else if (data.text === 'showcharts') {
+        this.props.chatEnds(true, data.data);
       }
+      this.props.getNewRoute(() => {
+        this.props.navigator.replace({id: this.props.routeName});
+      })
     })
   }
 
@@ -79,6 +81,8 @@ class ChatPage extends Component {
         </View>
         <AutoScroll style={{flex:8, backgroundColor: 'white'}}>
           <View style={styles.container}>
+
+
             {this.props.chatMessages.map(function(element, index) {
               return (
                 <Animatable.Text animation={element.type === 'client' ? "fadeInLeft" : "fadeInRight"} style={element.type === 'client' ? styles.message : styles.botmessage} key = {index}>

@@ -9,6 +9,7 @@ import LoginPage from './pages/Login';
 import SignupPage from './pages/Signup';
 import ChatPage from './pages/Chat';
 import ContactsPage from './pages/Contacts';
+import ChartPage from './pages/Chart';
 
 const uuid = require('react-native-uuid');
 
@@ -29,6 +30,8 @@ class VirgilApp extends Component {
       logStatus: false,
       chatOn: true,
       socket: null,
+      showChart: false,
+      surveyResults: null,
     };
     this.configureSocket = this.configureSocket.bind(this);
     this.addContacts = this.addContacts.bind(this);
@@ -115,6 +118,8 @@ class VirgilApp extends Component {
     if (this.state.logStatus === true) {
       if (this.state.chatOn) {
         this.state.routeName = 'ChatPage';
+      } else if(this.state.showChart) {
+        this.state.routeName = 'ChartPage';
       } else {
         this.state.routeName = 'ContactsPage';
       }
@@ -216,13 +221,19 @@ class VirgilApp extends Component {
     }
   }
 
-  chatEnds() {
+  chatEnds(chart, chartData) {
+    if(chart) {
+      console.log(chartData)
+      this.state.showChart = true;
+      this.state.surveyResults = chartData;
+    }
     this.state.chatOn = false;
     this.setState(this.state);
   }
 
   chatStarts() {
     this.state.chatOn = true;
+    this.state.showChart = false;
     this.setState(this.state);
   }
 
@@ -346,6 +357,17 @@ class VirgilApp extends Component {
           addNumber = {this.addNumber}
           clearGroup = {this.clearGroup}
           navigator = {navigator} />
+      );
+    }
+    if (routeId === 'ChartPage') {
+      return (
+        <ChartPage
+          getNewRoute = {this.getNewRoute}
+          routeName = {this.state.routeName}
+          socket = {this.state.socket}
+          chatStarts = {this.chatStarts}
+          navigator = {navigator}
+          surveyData = {this.state.surveyResults} />
       );
     }
   }
