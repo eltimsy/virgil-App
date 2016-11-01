@@ -118,7 +118,7 @@ class VirgilApp extends Component {
     if (this.state.logStatus === true) {
       if (this.state.chatOn) {
         this.state.routeName = 'ChatPage';
-      } else if(this.state.showChart) {
+      } else if (this.state.showChart) {
         this.state.routeName = 'ChartPage';
       } else {
         this.state.routeName = 'ContactsPage';
@@ -222,8 +222,7 @@ class VirgilApp extends Component {
   }
 
   chatEnds(chart, chartData) {
-    if(chart) {
-      console.log(chartData)
+    if (chart) {
       this.state.showChart = true;
       this.state.surveyResults = chartData;
     }
@@ -338,6 +337,7 @@ class VirgilApp extends Component {
           routeName = {this.state.routeName}
           socket = {this.state.socket}
           chatEnds = {this.chatEnds}
+          chatStarts = {this.chatStarts}
           chatMessages = {this.state.chatMessages}
           chatOn = {this.state.chatOn}
           userLogout = {this.userLogout}

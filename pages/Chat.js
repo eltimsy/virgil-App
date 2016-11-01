@@ -21,7 +21,9 @@ class ChatPage extends Component {
   componentDidMount() {
     this.props.socket.on('contacts', (data) => {
       if (data === 'gotocontacts') {
-        this.props.chatEnds(false);
+        this.props.chatEnds(false, null);
+      } else if (data === 'done') {
+        this.props.chatStarts();
       } else if (data.text === 'showcharts') {
         this.props.chatEnds(true, data.data);
       }

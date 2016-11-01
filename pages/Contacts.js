@@ -25,8 +25,7 @@ export default class ContactsPage extends Component {
 
   componentDidMount() {
     this.props.socket.on('contacts', (data) => {
-      if(data === 'done') {
-        this.props.chatStarts();
+      if (data === 'done') {
         this.props.getNewRoute(() => {
           this.props.navigator.replace({id: this.props.routeName})
         })
