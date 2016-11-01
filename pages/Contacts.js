@@ -15,12 +15,14 @@ const options = {
 
 
 export default class ContactsPage extends Component {
+
   static propTypes = {
     contactList: PropTypes.array.isRequired,
     addContacts: PropTypes.func.isRequired,
     groupList: PropTypes.array.isRequired,
     clearGroup: PropTypes.func.isRequired,
   }
+
   componentDidMount() {
     this.props.socket.on('contacts', (data) => {
       if(data === 'done') {
@@ -31,10 +33,12 @@ export default class ContactsPage extends Component {
       }
     })
   }
+
   handlePress() {
     let value = this.refs.form.getValue();
     this.props.addNumber(value);
   }
+
   handleSubmit() {
     let contacts = this.props.groupList
     if(contacts.length > 0) {
@@ -42,6 +46,7 @@ export default class ContactsPage extends Component {
       this.props.clearGroup();
     }
   }
+
   render() {
     let addcontacts = this.props.addContacts
     return (
@@ -59,11 +64,10 @@ export default class ContactsPage extends Component {
                 <Text style={styles.buttonText}>Add Number</Text>
               </TouchableHighlight>
             </View>
-
-          <View style={this.props.groupList.length > 0? styles.group: styles.row}>
+          <View style={this.props.groupList.length > 0 ? styles.group : styles.row}>
             {this.props.groupList.map(function(element,index) {
               return (<Text key = {index}>
-                {element.name? element.name + "" + element.number: element.number}
+                {element.name ? element.name + "" + element.number : element.number}
               </Text>)
             })}
             <View style={{alignItems: 'center', marginTop: 5}}>

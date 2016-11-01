@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, View,TextInput, Text, Navigator, TouchableHighlight } from 'react-native';
 import AutoScroll from 'react-native-auto-scroll';
 import KeyboardSpacer from './KeyboardSpacer';
+import * as Animatable from 'react-native-animatable';
 
 class ChatPage extends Component {
 
@@ -79,9 +80,11 @@ class ChatPage extends Component {
         <AutoScroll style={{flex:8, backgroundColor: 'white'}}>
           <View style={styles.container}>
             {this.props.chatMessages.map(function(element, index) {
-              return (<Text style={element.type === 'client'? styles.message : styles.botmessage} key = {index}>
-                {element.text}
-              </Text>)
+              return (
+                <Animatable.Text animation={element.type === 'client' ? "fadeInLeft" : "fadeInRight"} style={element.type === 'client' ? styles.message : styles.botmessage} key = {index}>
+                  {element.text}
+                </Animatable.Text>
+              )
             })}
           </View>
         </AutoScroll>
