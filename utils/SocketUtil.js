@@ -5,7 +5,8 @@ const io = require('socket.io-client/socket.io');
 const socketConfig = {
   path: '/',
   transports: ['websocket'],
-  query: ''
+  query: '',
+  forceNew: false
 };
 export default io;
 export { socketConfig };
