@@ -13,7 +13,7 @@ export default class ChartPage extends Component {
   render() {
     const colors = ['#E4CC37','#D0FFD6', '#FF9505', '#0496FF', '#0EAD69']
     const ydata = this.props.surveyData.map((element, index) => {
-      return({data:[element[1]], label: element[0], config: {color:colors[index]}})
+      return({data:[element[1]], label: element[0], config: {color:colors[index], fontSize: 20}})
     })
     return(
       <View style={{flex: 1}}>
@@ -22,9 +22,12 @@ export default class ChartPage extends Component {
         </View>
         <BarChart
           style={{flex: 8}}
-          data={{xValues:['My graph!'],
+          data={{xValues:[''],
                 yValues: ydata
               }}
+          xAxis={{drawGridLines:false,position:"BOTTOM"}}
+          yAxisRight={{enable:false}}
+          yAxis={{startAtZero:true,drawGridLines:false}}
           description={""}
         />
         <TouchableHighlight style={styles.button} onPress={this.handlePress.bind(this)} underlayColor='#99d9f4'>
