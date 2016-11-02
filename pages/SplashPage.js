@@ -12,7 +12,7 @@ class SplashPage extends Component {
         this.props.getNewRoute(() => {
           navigator.replace({id: this.props.routeName});
         });
-      }, 500);
+      }, 2000);
     })
   }
 

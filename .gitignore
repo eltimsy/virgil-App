@@ -42,3 +42,4 @@ android/app/libs
 android/keystores/debug.keystore
 
 config.json
+*.keystore
