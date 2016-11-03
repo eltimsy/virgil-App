@@ -77,9 +77,6 @@ class ChatPage extends Component {
         <KeyboardSpacer handlekey = {this.handlekeystate}/>
         <View style={this.state.keyboardstatus ? styles.chatbotSmall : styles.chatbot}>
           <Text style={this.state.keyboardstatus ? styles.botsmall : styles.bottitle}>Virgil</Text>
-          <TouchableHighlight style={this.state.keyboardstatus ? styles.buttonSmall : styles.button} onPress={this.handleLogout.bind(this)} underlayColor={'#99d9f4'}>
-              <Text style={this.state.keyboardstatus ? styles.buttonTextSmall : styles.buttonText}>Logout</Text>
-          </TouchableHighlight>
         </View>
         <AutoScroll style={{flex:8, backgroundColor: 'white'}}>
           <View style={styles.container}>
@@ -209,3 +206,7 @@ const styles = StyleSheet.create({
 });
 
 module.exports = ChatPage;
+
+// <TouchableHighlight style={this.state.keyboardstatus ? styles.buttonSmall : styles.button} onPress={this.handleLogout.bind(this)} underlayColor={'#99d9f4'}>
+//     <Text style={this.state.keyboardstatus ? styles.buttonTextSmall : styles.buttonText}>Logout</Text>
+// </TouchableHighlight>

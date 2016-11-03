@@ -45,7 +45,8 @@ class VirgilApp extends Component {
   }
 
   async configureSocket(_done) {
-    this.state.socket = null;
+    // this.state.socket = null;
+    this.setState({socket: null});
     const TOKEN = await AsyncStorage.getItem(STORAGE_KEY);
     if (TOKEN) {
       socketConfig.query = `token=${TOKEN}`;
