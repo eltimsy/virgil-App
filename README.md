@@ -11,7 +11,8 @@ How does it work?
 A user downloads the app and creates an account.  He can than start interacting with the bot to create a simple survey that includes 5 choices of food categories.  The user than creates a group of friends using his contacts on his phone or by adding non-existent numbers. Next the survey is sent to all the group members via SMS message.  After all the members reply the survey creator is notified and given 2 restaurants based on preferences and location.
 
 ##Screenshots
-![Alt text](/relative/path/to/screens/login.png?raw=true "Optional Title")
+![Alt text](https://raw.github.com/eltimsy/virgil-App/master/screens/login.png "Optional title")
+
 
 ##How to install
 You need to have both the Virgil server and Virgil App in order to run this app.  You will also need to install react-native and Android SDK to run and build the App on your android device or emulator.
