@@ -17,7 +17,7 @@ A user downloads the app and creates an account.  He can than start interacting 
 ![Alt text](https://raw.github.com/eltimsy/virgil-App/master/screens/chatintro.png "Optional title")
 ![Alt text](https://raw.github.com/eltimsy/virgil-App/master/screens/location.png "Optional title")
 ![Alt text](https://raw.github.com/eltimsy/virgil-App/master/screens/number.png "Optional title")
-
+![Alt text](https://raw.github.com/eltimsy/virgil-App/master/screens/SMS.png "Optional title")
 ![Alt text](https://raw.github.com/eltimsy/virgil-App/master/screens/status.png "Optional title")
 
 
