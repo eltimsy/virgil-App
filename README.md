@@ -1,16 +1,16 @@
-#VIRGIL Client
+# VIRGIL Client
 VIRGIL comes in two parts this is the client side using react-native to be used with android phones.
 
 Link to Server: https://github.com/micahsmith/virgil
 
-##VIRGIL is the Restaurant Guide In Limbo
+## VIRGIL is the Restaurant Guide In Limbo
 A mobile app created to provide a convenient way to decide on restaurants with friends.  
 
 How does it work?
 
 A user downloads the app and creates an account.  He can than start interacting with the bot to create a simple survey that includes 5 choices of food categories.  The user than creates a group of friends using his contacts on his phone or by adding non-existent numbers. Next the survey is sent to all the group members via SMS message.  After all the members reply the survey creator is notified and given 2 restaurants based on preferences and location.
 
-##Screenshots
+## Screenshots
 ![Alt text](https://raw.github.com/eltimsy/virgil-App/master/screens/login.png "Optional title")
 ![Alt text](https://raw.github.com/eltimsy/virgil-App/master/screens/chat.png "Optional title")
 ![Alt text](https://raw.github.com/eltimsy/virgil-App/master/screens/chatgreet.png "Optional title")
@@ -21,7 +21,7 @@ A user downloads the app and creates an account.  He can than start interacting 
 ![Alt text](https://raw.github.com/eltimsy/virgil-App/master/screens/status.png "Optional title")
 
 
-##How to install
+## How to install
 You need to have both the Virgil server and Virgil App in order to run this app.  You will also need to install react-native and Android SDK to run and build the App on your android device or emulator.
 
 Instructions:
@@ -68,7 +68,7 @@ Client side:
 }  
 -run react-native run-android to build the app on your device  
 
-##Using the app
+## Using the app
 The app begins with a login/signup page and after you login it brings you to a page to interact with a chatbot.  Type a greeting i.e. 'Hello' to begin and it will give you suggestions of what input you can type.  If you need more help you can type help to get more information.
 
 The chat interaction is run on 5 layers broken into:
